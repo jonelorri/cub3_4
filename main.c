@@ -52,8 +52,8 @@ void	verLine(t_data *m, int x)
 
 void	init_variables(t_data *m)
 {
-	m->posX = 13;
-	m->posY = 7;
+	m->posX = 22;
+	m->posY = 12;
 	m->dirX = -1;
 	m->dirY = 0;
 	m->planeX = 0;
@@ -65,7 +65,10 @@ void	init_variables(t_data *m)
 
 int	main()
 {
+	int x;
 	t_data	m;
+
+	x = 0;
 	init_variables(&m);
 	m.mlx = mlx_init();
 	m.mlx_win = mlx_new_window(m.mlx, screenWidth, screenHeight, "Raycaster");
@@ -73,7 +76,7 @@ int	main()
 	m.addr = mlx_get_data_addr(m.img, &m.bits_per_pixel, &m.lineLength, &m.endian);
 
 	//* BLUCLE PRINCIPAL
-	for (int x = 0; x < screenWidth; x++)
+	while (x < screenWidth)
 	{
 		m.cameraX = 2 * x / (double)screenWidth - 1;
 		m.rayDirX = m.dirX + m.planeX * m.cameraX;
@@ -81,13 +84,13 @@ int	main()
 		m.mapX = (int)m.posX;
 		m.mapY = (int)m.posY;
 		if (m.rayDirX == 0)
-			m.deltaDistX = 1e30;
+			m.deltaDistX = exp(30);
 		else
-			m.deltaDistX = fabs(1 / m.rayDirX);
+			m.deltaDistX = fabs(1.0 / m.rayDirX);
 		if (m.rayDirY == 0)
-			m.deltaDistY = 1e30;
+			m.deltaDistY = exp(30);
 		else
-			m.deltaDistY = fabs(1 / m.rayDirY);
+			m.deltaDistY = fabs(1.0 / m.rayDirY);
 		if (m.rayDirX < 0)
 		{
 			m.stepX = -1;
@@ -101,7 +104,7 @@ int	main()
 		if (m.rayDirY < 0)
 		{
 			m.stepY = -1;
-			m.sideDistY = (m.posX - m.mapY) * m.deltaDistY;
+			m.sideDistY = (m.posY - m.mapY) * m.deltaDistY;
 		}
 		else
 		{
@@ -123,7 +126,10 @@ int	main()
 				m.mapY += m.stepY;
 				m.side = 1;
 			}
-			if (worldMap[m.mapX][m.mapY] > 0) m.hit = 1;
+			if (worldMap[m.mapY][m.mapX] > 0)
+				m.hit = 1;
+			// if (worldMap[m.mapX][m.mapY] > 0)
+			// 	m.hit = 1;
 		}
 		if (m.side == 0)
 			m.perpWallDist = (m.sideDistX - m.deltaDistX);
@@ -141,6 +147,7 @@ int	main()
 		// 	m.color = m.color / 2;
 		verLine(&m, x);
 		mlx_put_image_to_window(m.mlx, m.mlx_win, m.img, 0, 0);
+		x ++;
 	}
 	mlx_loop(m.mlx);
 }
