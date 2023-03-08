@@ -15,6 +15,7 @@ typedef struct	s_data
 	int		endian;
 	int		lineLength;
 	void	*img;
+	char	**newMap;
 	double	posX;
 	double	posY;
 	double	dirX;
@@ -41,6 +42,9 @@ typedef struct	s_data
 	int		drawStart;
 	int		drawEnd;
 	int		color;
+	double	rotSpeed;
 }				t_data;
+
+void    draw_map(t_data *m, int screenWidth, int screenHeight, int **worldMap);
 
 #endif
