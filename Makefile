@@ -1,32 +1,40 @@
-NAME = cub3d
+NAME= Cub3d
+CC= gcc
+CFLAGS= -Wall -Wextra -Werror 
+SANITIZE= -g3 -fsanitize=address
+RM= rm -rf
+FILES= 	main \
+		ft_utils2_m \
+		ft_utils_m \
+		ft_char_check \
+		ft_move \
 
-SRC =  main.c\
+SRC= $(addsuffix .c, $(FILES))
+OBJ= $(addsuffix .o, $(FILES))
+LIBFT = libft/libft.a
 
-OBJ = main.o\
+.c.o:
+	$(CC) $(CFLAGS) $(SANITIZE) -o $@ -c $^
 
-CC = gcc -O3
+$(NAME): $(OBJ) 
+	@${MAKE} -C libft
+	@${MAKE} -s -C mlx 2>.errors
+	@$(CC) $(FLAGS) $(SANITIZE) -c $(SRC) 
+	@$(CC) $(FLAG) $(SANITIZE) -L mlx  -lmlx -framework OpenGL -framework AppKit -o $(NAME) $(OBJ) $(LIBFT)
 
-$(NAME): $(OBJ)
-		@date
-		@${MAKE} -C mlx 2>.null
-		@$(CC) $(CFLAGS) -Imlx -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME) $(OBJ)
-		@echo "\n-------CORRECTLY COMPILED------"
-	
 all: $(NAME)
 
-%.o: %.c
-	@$(CC) $(CFLAGS) -Imlx -c $^ -o $@	
-
-clean:
-	@/bin/rm -rf $(OBJ)
-	@/bin/rm -rf .null
-	@${MAKE} -C mlx clean
-	@echo "---------CLEAN  DONE----------"
+clean: 
+	${MAKE} clean -s -C libft
+	$(RM) $(OBJ)
 
 fclean: clean
-	@/bin/rm -rf $(NAME)
-	@echo "---------FCLEAN  DONE---------"
+	${MAKE} fclean -s -C libft
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+run:
+	./$(NAME)
+
+.PHONY:all clean fclean re
