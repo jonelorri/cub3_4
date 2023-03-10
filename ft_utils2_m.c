@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:27 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/05 12:33:54 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/10 19:22:24 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	ft_map_p(char *s, t_game *g, int *p, int j)
 		if (s[i] == 'N' || s[i] == 'S' || s[i] == 'E' || s[i] == 'W')
 		{
 			printf("cantidad de jugadores = %d\n", *p);
+			printf("%d, %d, \n",i, j);
 			g->p.x = i;
 			g->p.y = j;
 			g->p.check = 1;

@@ -711,12 +711,55 @@ void	verLine(t_data *m, int x)
 	}
 }
 
-void	init_variables(t_data *m)
+char	ft_find_pj(t_game *game)
 {
-	m->posX = 2;
-	m->posY = 2;
-	m->dirX = 1;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while(game->map[i])
+	{
+		while (game->map[i][j])
+		{
+			if (game->map[i][j] == 'E' || game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'W')
+				return (game->map[i][j]);
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	return ('X');
+}
+
+void	init_variables(t_data *m, t_game *game)
+{
+	char a;
+
+	a = ft_find_pj(game);
+	printf("char epico es = %c", a);
+	m->posX = game->p.x;
+	m->posY = game->p.y;
+	if (a == 'E')
+	{
+		m->dirX = 1;
+		m->dirY = 0;
+	}
+	else if (a == 'W')
+	{
+		m->dirX = -1;
+		m->dirY = 0;
+	}
+	else if (a == 'N')
+	{
+		m->dirX = 0;
+		m->dirY = -1;
+	}
+	else if (a == 'S')
+	{
+	m->dirX = 0;
 	m->dirY = 1;
+	}
 	m->planeX = 0;
 	m->planeY = 0.66;
 	m->time = 0;
@@ -746,7 +789,8 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (ft_map_check(&game) == -1)
 		return (-1);
-	init_variables(&game.m);
+	init_variables(&game.m, &game);
+	printf("%f, %f,\n", game.p.x, game.p.y);
 	game.win = mlx_new_window(game.mlx, screenWidth, screenHeight, "Cub3d");
 	game.m.img = mlx_new_image(game.mlx, screenWidth, screenHeight);
 	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bits_per_pixel, &game.m.lineLength, &game.m.endian);
@@ -800,7 +844,7 @@ int	main(int argc, char **argv)
 				game.m.mapY += game.m.stepY;
 				game.m.side = 1;
 			}
-			if (worldMap[game.m.mapY][game.m.mapX] > 0)
+			if (game.map[game.m.mapY][game.m.mapX] == '1')
 				game.m.hit = 1;
 		}
 		if (game.m.side == 0)
