@@ -7,7 +7,6 @@ FILES= 	main \
 		ft_utils2_m \
 		ft_utils_m \
 		ft_char_check \
-		ft_move \
 
 SRC= $(addsuffix .c, $(FILES))
 OBJ= $(addsuffix .o, $(FILES))

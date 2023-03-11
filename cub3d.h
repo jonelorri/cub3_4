@@ -44,6 +44,7 @@ typedef struct	s_data
 	int		drawEnd;
 	int		color;
 	double	rotSpeed;
+	double	moveSpeed;
 }				t_data;
 
 typedef struct s_img
@@ -113,6 +114,7 @@ typedef struct s_game
 	t_color		c_col;
 }				t_game;
 
+void	ft_draw(t_game *game);
 int     ft_map_check(t_game *g);
 void	free_matrix(char **str);
 int     ft_map_exit_check(t_game *g);
