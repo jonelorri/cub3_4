@@ -56,6 +56,7 @@ typedef struct s_img
 
 typedef struct s_color
 {
+	int		color;
 	int		init;
 	int		g;
 	int		b;
