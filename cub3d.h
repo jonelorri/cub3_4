@@ -3,7 +3,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <mlx.h>
+# include "mlx/mlx.h"
 # include <math.h>
 #include "libft/libft.h"
 
@@ -94,7 +94,16 @@ typedef struct s_game
 	char		*col_f;
 	char		*col_c;
 	char		**map;
+	int			**newMap;
+	int			texNum;
+	int			texX;
+	int			texY;
+	int			texWidth;
+	int			texHeight;
+	double		texPos;
+	double		step;
 	char		**file;
+	double		wallx;
 	char		**file_save;
 	char		**tex;
 	int			no_check;

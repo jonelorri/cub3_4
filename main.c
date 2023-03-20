@@ -717,10 +717,19 @@ void	ft_move_down(t_game *game, int key)
 void	ft_move_left(t_game *game, int key)
 {
 	key = 0;//!
-	if(game->map[(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)][(int)game->m.posX] != '1')
-		game->m.posY +=  game->m.dirX* game->m.moveSpeed;
-	if(game->map[(int)(game->m.posY)][(int)(game->m.posX + game->m.dirX * game->m.moveSpeed)] != '1')
+	double pruebaX;
+	double pruebaY;
+
+	pruebaX = game->m.posX + (- game->m.dirY) * game->m.moveSpeed;
+	pruebaY = game->m.posY +  game->m.dirX * game->m.moveSpeed;
+	printf("char compara = %c\n", game->map[(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)][(int)game->m.posX]);
+	printf("char compara = %c\n", game->map[(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)][(int)game->m.posX]);
+	if(game->map[(int)(pruebaX)][(int)game->m.posX] != '1')
+	//	game->m.posX = pruebaY;
 		game->m.posX += (- game->m.dirY) * game->m.moveSpeed;
+	if(game->map[(int)(game->m.posY)][(int)(pruebaY)] != '1')
+		game->m.posY +=  game->m.dirX * game->m.moveSpeed;
+	//	game->m.posY +=  pruebaX;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
@@ -732,9 +741,14 @@ void	ft_move_right(t_game *game, int key)
 {
 	key = 0;//!
 	// TODO
-	if(game->map[(int)(game->m.posX - game->m.dirX * game->m.moveSpeed)][(int)game->m.posY] != '1')
+	double pruebaX;
+	double pruebaY;
+
+	pruebaX = game->m.posX - (- game->m.dirY) * game->m.moveSpeed;
+	pruebaY = game->m.posY -  game->m.dirX* game->m.moveSpeed;
+	if(game->map[(int)(pruebaX)][(int)game->m.posX] != '1')
 		game->m.posX -= (- game->m.dirY) * game->m.moveSpeed;
-	if(game->map[(int)(game->m.posX)][(int)(game->m.posY + game->m.dirY * game->m.moveSpeed)] != '1')
+	if(game->map[(int)(game->m.posY)][(int)(pruebaY)] != '1')
 		game->m.posY -=  game->m.dirX* game->m.moveSpeed;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
@@ -865,6 +879,8 @@ void	init_variables(t_data *m, t_game *game)
 	printf("char epico es = %c", a);
 	m->posX = game->p.x;
 	m->posY = game->p.y;
+	game->texHeight = 64;
+	game->texWidth = 64;
 	if (a == 'E')
 	{
 		m->dirX = 1;
@@ -897,6 +913,23 @@ void	init_variables(t_data *m, t_game *game)
 	m->oldTime = 0;
 	m->rotSpeed = 25;
 	m->moveSpeed = 0.1;
+}
+
+void	draw_texture(t_game *game)
+{
+	int	i;
+
+	i = game->m.drawStart;
+	while (i < game->m.drawEnd)
+	{
+		game->texY = (int)game->texPos & (game->texHeight - 1);
+		game->texPos += game->step;
+		game->m.color = 
+		// Uint32 color = texture[texNum][texHeight * texY + texX];
+        // if(side == 1) color = (color >> 1) & 8355711;
+        // buffer[y][x] = color;
+		i ++;
+	}
 }
 
 void	ft_draw(t_game *game)
@@ -942,6 +975,7 @@ void	ft_draw(t_game *game)
 		}
 		while (game->m.hit == 0)
 		{
+			//printf("%f, %f,", game->m.sideDistX,)
 			if (game->m.sideDistX < game->m.sideDistY)
 			{
 				game->m.sideDistX += game->m.deltaDistX;
@@ -958,9 +992,22 @@ void	ft_draw(t_game *game)
 				game->m.hit = 1;
 		}
 		if (game->m.side == 0)
+		{
+			if (game->m.rayDirX > 0)
+				game->m.color = 0xAA00FF;
+			else
+				game->m.color = 0xAA00FF/2;
 			game->m.perpWallDist = (game->m.sideDistX - game->m.deltaDistX);
+		}
 		else
+		{
 			game->m.perpWallDist = (game->m.sideDistY - game->m.deltaDistY);
+			if (game->m.rayDirY > 0)
+				game->m.color = 0xAA00AA;
+			else
+				game->m.color = 0xAAAAFF;
+		
+		}
 		game->m.lineHeight = (int)(screenHeight / game->m.perpWallDist);
 		game->m.drawStart = -game->m.lineHeight / 2 + screenHeight / 2;
 		if(game->m.drawStart < 0)
@@ -968,11 +1015,91 @@ void	ft_draw(t_game *game)
 		game->m.drawEnd = game->m.lineHeight / 2 + screenHeight / 2;
 		if(game->m.drawEnd >= screenHeight)
 			game->m.drawEnd = screenHeight - 1;
-		game->m.color = 0x0000FF;
-		if (game->m.side == 1)
-			game->m.color = game->m.color / 2;
+		//
+		/*game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
+		if (game->m.side == 0)
+			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirY;
+		else
+			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirX;
+		game->wallx -= floor(game->wallx);
+		game->texX = (int)(game->wallx * (float)game->texWidth);
+		if (game->m.side == 0 && game->m.rayDirX > 0)
+			game->texX = game->texWidth - game->texX - 1;
+		if (game->m.side == 1 && game->m.rayDirY < 0)
+			game->texX = game->texWidth - game->texX - 1;
+		game->step = 1.0 * game->texHeight / game->m.lineHeight;
+		*///game->texPos = (game->m.drawStart - screenHeight / 2 + game->m.lineHeight / 2) * game->step;
+		//draw_texture(game);
 		verLine(&game->m, x, game);
 		x ++;
+	}
+}
+
+void	fill_new_map(t_game *game)
+{
+	int	i;
+	int	j;
+	int	w;
+
+	i = 0;
+	w = 0;
+	j = 0;
+	while (game->map[j])
+		j ++;
+	game->newMap = (int**)malloc(sizeof(int*) * j);
+	while (w < j)
+	{
+		while (game->map[w][i])
+			i ++;
+		game->newMap[w] = (int*)malloc(sizeof(int) * i);
+		i = 0;
+		while (game->map[w][i])
+		{
+			if (game->map[w][i] == '1')
+				game->newMap[w][i] = 1;
+			else
+				game->newMap[w][i] = 0;
+			i ++;
+		}
+		i = 0;
+		w ++;
+	}
+}
+
+void	print_matrix(t_game *game)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	printf("\n");
+	while (game->map[i])
+	{
+		while (game->map[i][j])
+		{
+
+			printf("%d", game->newMap[i][j]);
+			j ++;
+		}
+		printf("\n");
+		j = 0;
+		i ++;
+	}
+	printf("----------------------\n");
+	i = 0;
+	j = 0;
+	while (game->map[i])
+	{
+		while (game->map[i][j])
+		{
+
+			printf("%c", game->map[i][j]);
+			j ++;
+		}
+		printf("\n");
+		j = 0;
+		i ++;
 	}
 }
 
@@ -999,82 +1126,14 @@ int	main(int argc, char **argv)
 	if (ft_map_check(&game) == -1)
 		return (-1);
 	init_variables(&game.m, &game);
+	fill_new_map(&game);
+	print_matrix(&game);
 	game.win = mlx_new_window(game.mlx, screenWidth, screenHeight, "Cub3d");
 	game.m.img = mlx_new_image(game.mlx, screenWidth, screenHeight);
 	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bits_per_pixel, &game.m.lineLength, &game.m.endian);
 	printf("\ncolor suelo = %s\n", game.f_col.col);
 	printf("color cielo = %s\n", game.c_col.col);
 	ft_draw(&game);
-	/*while (x < screenWidth)
-	{
-		game.m.cameraX = 2 * x / (double)screenWidth - 1;
-		game.m.rayDirX = game.m.dirX + game.m.planeX * game.m.cameraX;
-		game.m.rayDirY = game.m.dirY + game.m.planeY * game.m.cameraX;
-		game.m.mapX = (int)game.m.posX;
-		game.m.mapY = (int)game.m.posY;
-		if (game.m.rayDirX == 0)
-			game.m.deltaDistX = exp(30);
-		else
-			game.m.deltaDistX = fabs(1.0 / game.m.rayDirX);
-		if (game.m.rayDirY == 0)
-			game.m.deltaDistY = exp(30);
-		else
-			game.m.deltaDistY = fabs(1.0 / game.m.rayDirY);
-		game.m.hit = 0;
-		if (game.m.rayDirX < 0)
-		{
-			game.m.stepX = -1;
-			game.m.sideDistX = (game.m.posX - game.m.mapX) * game.m.deltaDistX;
-		}
-		else
-		{
-			game.m.stepX = 1;
-			game.m.sideDistX = (game.m.mapX + 1.0 - game.m.posX) * game.m.deltaDistX;
-		}
-		if (game.m.rayDirY < 0)
-		{
-			game.m.stepY = -1;
-			game.m.sideDistY = (game.m.posY - game.m.mapY) * game.m.deltaDistY;
-		}
-		else
-		{
-			game.m.stepY = 1;
-			game.m.sideDistY = (game.m.mapY + 1.0 - game.m.posY) * game.m.deltaDistY;
-		}
-		while (game.m.hit == 0)
-		{
-			if (game.m.sideDistX < game.m.sideDistY)
-			{
-				game.m.sideDistX += game.m.deltaDistX;
-				game.m.mapX += game.m.stepX;
-				game.m.side = 0;
-			}
-			else
-			{
-				game.m.sideDistY += game.m.deltaDistY;
-				game.m.mapY += game.m.stepY;
-				game.m.side = 1;
-			}
-			if (game.map[game.m.mapY][game.m.mapX] == '1')
-				game.m.hit = 1;
-		}
-		if (game.m.side == 0)
-			game.m.perpWallDist = (game.m.sideDistX - game.m.deltaDistX);
-		else
-			game.m.perpWallDist = (game.m.sideDistY - game.m.deltaDistY);
-		game.m.lineHeight = (int)(screenHeight / game.m.perpWallDist);
-		game.m.drawStart = -game.m.lineHeight / 2 + screenHeight / 2;
-		if(game.m.drawStart < 0)
-			game.m.drawStart = 0;
-		game.m.drawEnd = game.m.lineHeight / 2 + screenHeight / 2;
-		if(game.m.drawEnd >= screenHeight)
-			game.m.drawEnd = screenHeight - 1;
-		game.m.color = 0x0000FF;
-		if (game.m.side == 1)
-			game.m.color = game.m.color / 2;
-		verLine(&game.m, x);
-		x ++;
-	}*/
 	printf("dirX: %f\n", game.m.dirX);
 	printf("dirY: %f\n", game.m.dirY);
 	mlx_put_image_to_window(game.mlx, game.win, game.m.img, 0, 0);
