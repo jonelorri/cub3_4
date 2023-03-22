@@ -8,6 +8,49 @@
 #define screenWidth 640
 #define screenHeight 480
 
+void	position_values(t_data *data, int i, int j, t_game *game)
+{
+	if (data->posY == i && data->posX == j)
+		printf("🎮");
+	else if (game->map[i][j] == ' ')
+		printf("  ");
+	else if (game->map[i][j] == '1')
+		printf("\xF0\x9F\x8C\xB4");
+	else if (game->map[i][j] == '0')
+		printf("🟦");
+}
+void	print_data(t_data *data)
+{
+	printf("\n---------\n");
+	printf("PLAYER:\npos = (%f, %f) -- (%d, %d)\n",
+		data->posX, data->posY,
+		(int)data->mapX, (int)data->posY);
+	printf("dir = (%f, %f)\nplane = (%f, %f)\n",
+		data->dirX, data->dirY,
+		data->planeX, data->planeY);
+}
+
+void	change_value(t_data *data,  t_game *game)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (game->map[++i])
+	{
+		j = -1;
+		while (++j < (int)ft_strlen(game->map[i]))
+		{
+			if (!game->map[i][j])
+				break ;
+			position_values(data, i, j, game);
+		}
+		printf("\n");
+	}
+	print_data(data);
+}
+
+
 int	ft_close(t_game *g)
 {
 	mlx_destroy_window(g->mlx, g->win);
@@ -702,7 +745,6 @@ void	ft_move_up(t_game *game, int key)
 void	ft_move_down(t_game *game, int key)
 {
 	key = 0;//!
-	printf("mueve para abajo\n");
 	if(game->map[(int)(game->m.posX - game->m.dirX * game->m.moveSpeed)][(int)game->m.posY] != '1')
 		game->m.posX -= game->m.dirX * game->m.moveSpeed;
     if(game->map[(int)(game->m.posX)][(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)] != '1')
@@ -720,15 +762,22 @@ void	ft_move_left(t_game *game, int key)
 	double pruebaX;
 	double pruebaY;
 
-	pruebaX = game->m.posX + (- game->m.dirY) * game->m.moveSpeed;
-	pruebaY = game->m.posY +  game->m.dirX * game->m.moveSpeed;
-	printf("char compara = %c\n", game->map[(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)][(int)game->m.posX]);
-	printf("char compara = %c\n", game->map[(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)][(int)game->m.posX]);
-	if(game->map[(int)(pruebaX)][(int)game->m.posX] != '1')
-	//	game->m.posX = pruebaY;
+	pruebaX = game->m.posX + ( game->m.dirY) * game->m.moveSpeed;
+	pruebaY = game->m.posY -  game->m.dirX * game->m.moveSpeed;
+	
+	printf("src = %s\n", );
+	if(!(game->map[(int)(game->m.posY)][(int)(pruebaX)] == '1'))
+		game->m.posX = pruebaX;
+	//	game->m.posX += (- game->m.dirY) * game->m.moveSpeed;
+
+	if(game->map[(int)(pruebaX)][(int)(game->m.posX)] != '1')
+		game->m.posY = pruebaY;
+		//game->m.posY +=  game->m.dirX * game->m.moveSpeed;
+	/*if(game->map[(int)(pruebaX)][(int)(game->m.posX)] != '1')
 		game->m.posX += (- game->m.dirY) * game->m.moveSpeed;
 	if(game->map[(int)(game->m.posY)][(int)(pruebaY)] != '1')
 		game->m.posY +=  game->m.dirX * game->m.moveSpeed;
+	*/
 	//	game->m.posY +=  pruebaX;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
@@ -744,12 +793,20 @@ void	ft_move_right(t_game *game, int key)
 	double pruebaX;
 	double pruebaY;
 
-	pruebaX = game->m.posX - (- game->m.dirY) * game->m.moveSpeed;
-	pruebaY = game->m.posY -  game->m.dirX* game->m.moveSpeed;
-	if(game->map[(int)(pruebaX)][(int)game->m.posX] != '1')
-		game->m.posX -= (- game->m.dirY) * game->m.moveSpeed;
-	if(game->map[(int)(game->m.posY)][(int)(pruebaY)] != '1')
-		game->m.posY -=  game->m.dirX* game->m.moveSpeed;
+	pruebaX = game->m.posX - ( game->m.dirY) * game->m.moveSpeed;
+	pruebaY = game->m.posY + game->m.dirX * game->m.moveSpeed;
+	if(game->map[(int)(pruebaY)][(int)game->m.posX] != '1')
+	{
+		printf("A\n");
+		game->m.posY = pruebaY;
+//		game->m.posX -= (- game->m.dirY) * game->m.moveSpeed;
+	}
+	if(game->map[(int)(game->m.posY)][(int)(pruebaX)] != '1')
+	{
+		printf("B\n");
+		game->m.posX = pruebaX;
+	//	game->m.posY -=  game->m.dirX* game->m.moveSpeed;
+	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
@@ -759,6 +816,7 @@ void	ft_move_right(t_game *game, int key)
 
 int	key_event(int key_code, t_game *game)
 {
+	change_value(&game->m, game);
 	if (key_code == 53)
 		exit(0);
 	
@@ -766,21 +824,13 @@ int	key_event(int key_code, t_game *game)
 		ft_move_up(game, key_code);
 	else if (key_code == 0x01)
 		ft_move_down(game, key_code);
-	if (game->m.dirY > 0)
-	{
-	 if (key_code == 0x02)
+	 if (key_code == 2)
 		ft_move_right(game, key_code);
-	 if (key_code == 0x00)
+	 if (key_code == 0)
 		ft_move_left(game, key_code);
-	}
-	else 
-	{
-	 if (key_code == 0x02)
-		ft_move_right(game, key_code);
-	 if (key_code == 0x00)
-		ft_move_left(game, key_code);
-	}
-	if (key_code == 123)
+	printf("char string que sigue = %s\n", game->map[(int)(game->m.posY)] + (int)game->m.posX);
+	printf("x = %f, y = %f\n", game->m.posX, game->m.posY);
+	if (key_code == 124)
 	{
 		printf("->\n");
 		double oldDirX = game->m.dirX;
@@ -797,7 +847,7 @@ int	key_event(int key_code, t_game *game)
 		ft_draw(game);
 		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 	}
-	else if (key_code == 124)
+	else if (key_code == 123)
 	{
 		printf("<-\n");
 		double oldDirX = game->m.dirX;
@@ -877,8 +927,8 @@ void	init_variables(t_data *m, t_game *game)
 
 	a = ft_find_pj(game);
 	printf("char epico es = %c", a);
-	m->posX = game->p.x;
-	m->posY = game->p.y;
+	m->posX = game->p.x + 0.5;
+	m->posY = game->p.y + 0.5;
 	game->texHeight = 64;
 	game->texWidth = 64;
 	if (a == 'E')
@@ -893,7 +943,7 @@ void	init_variables(t_data *m, t_game *game)
 		m->dirX = -1;
 		m->dirY = 0;
 		m->planeX = 0;
-		m->planeY = 0.66;
+		m->planeY = -0.66;
 	}
 	else if (a == 'N')
 	{
@@ -906,7 +956,7 @@ void	init_variables(t_data *m, t_game *game)
 	{
 		m->dirX = 0;
 		m->dirY = 1;
-		m->planeX = 0.66;
+		m->planeX = -0.66;
 		m->planeY = 0;
 	}
 	m->time = 0;
@@ -994,18 +1044,18 @@ void	ft_draw(t_game *game)
 		if (game->m.side == 0)
 		{
 			if (game->m.rayDirX > 0)
-				game->m.color = 0xAA00FF;
+				game->m.color = 0xfe9c1c;
 			else
-				game->m.color = 0xAA00FF/2;
+				game->m.color = 0xf16f38;
 			game->m.perpWallDist = (game->m.sideDistX - game->m.deltaDistX);
 		}
 		else
 		{
 			game->m.perpWallDist = (game->m.sideDistY - game->m.deltaDistY);
 			if (game->m.rayDirY > 0)
-				game->m.color = 0xAA00AA;
+				game->m.color = 0xfe661c;
 			else
-				game->m.color = 0xAAAAFF;
+				game->m.color = 0xf19438;
 		
 		}
 		game->m.lineHeight = (int)(screenHeight / game->m.perpWallDist);
@@ -1136,6 +1186,9 @@ int	main(int argc, char **argv)
 	ft_draw(&game);
 	printf("dirX: %f\n", game.m.dirX);
 	printf("dirY: %f\n", game.m.dirY);
+	printf("pos x = %f ", game.m.posX);
+	printf("pos y = %f\n", game.m.posY);
+	print_data(&game.m);
 	mlx_put_image_to_window(game.mlx, game.win, game.m.img, 0, 0);
 	mlx_hook(game.win, 2, 0, &key_event, &game);
 	mlx_hook(game.win, 17, 0, ft_close, &game);
