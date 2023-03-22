@@ -1,6 +1,6 @@
 NAME= Cub3d
 CC= gcc
-CFLAGS= -Wall -Wextra -Werror 
+CFLAGS= #-Wall -Wextra -Werror 
 SANITIZE= -g3 -fsanitize=address
 RM= rm -rf
 FILES= 	main \

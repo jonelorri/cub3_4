@@ -561,6 +561,10 @@ int	ft_check_tex(t_game *game)
 		game->ea.img = mlx_xpm_file_to_image(game->mlx, game->ea_tex, &game->ea.w, &game->ea.h);
 	if (!game->ea.img || !game->ea_tex)
 		return (-1);
+	printf("addr = %p\n", game->no.img);
+	printf("addr = %p\n", game->so.img);
+	printf("addr = %p\n", game->we.img);
+	printf("addr = %p\n", game->ea.img);
 	return (0);
 }
 
@@ -679,34 +683,6 @@ int	ft_file_split(t_game *game)
 	return (0);
 }
 
-// int	worldMap[mapWidth][mapHeight]=
-// {
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-// };
-
 int	worldMap[mapWidth][mapHeight]=
 {
 	{1,1,1,1,1,1,1,1,1},
@@ -765,7 +741,6 @@ void	ft_move_left(t_game *game, int key)
 	pruebaX = game->m.posX + ( game->m.dirY) * game->m.moveSpeed;
 	pruebaY = game->m.posY -  game->m.dirX * game->m.moveSpeed;
 	
-	printf("src = %s\n", );
 	if(!(game->map[(int)(game->m.posY)][(int)(pruebaX)] == '1'))
 		game->m.posX = pruebaX;
 	//	game->m.posX += (- game->m.dirY) * game->m.moveSpeed;
@@ -874,28 +849,58 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	dst = data->addr + (y * data->lineLength + x * (data->bits_per_pixel / 8));
 	*(unsigned int*)dst = color;
 }
+//* //
+unsigned int	get_mlx_pixel_color(t_game *game, t_img *tex, int x, int y)
+{
+	char			*dst;
+	int				offset;
+	unsigned int	color;
 
+	offset = (y * game->m.lineLength + x * (game->m.bits_per_pixel / 8));
+	dst = tex->img + offset;
+	color = *(unsigned int *)dst;
+	//printf("Color = %u\n", color);
+	return (color);
+}
+
+// static void	mlx_draw_column(t_data *data, t_ray ray, t_mlx texture)
+// {
+// 	my_mlx_pixel_put(data, ray.x, ray.y, get_mlx_pixel_color(&texture, ray.tex_x, ray.tex_y));
+// }
+static void	draw_column(t_game *game, int y, int x, t_img *tex)
+{
+	printf("addr = %p\n", tex->img);
+	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(game, tex, game->texX, game->texY));
+}
+//* //
 void	verLine(t_data *m, int x, t_game *game)
 {
 	int i;
-	//char *s = "0xFF0000";
 
 	i = 0;
+	printf("A\n");
 	while (i < m->drawStart)
 	{
-		my_mlx_pixel_put(m, x, i, /*0xFF0000*/game->f_col.color);
-		//my_mlx_pixel_put(m, x, i, /*0xFF0000*/(int)game->c_col.col);
+		my_mlx_pixel_put(m, x, i, game->f_col.color);
 		i ++;
 	}
-	
-	while (m->drawStart < m->drawEnd)
+	while (i < m->drawEnd)
 	{
-		my_mlx_pixel_put(m, x, m->drawStart, m->color);
-		m->drawStart += 1;
+		game->texY = (int)game->texPos & (game->texHeight - 1);
+		game->texPos += game->step;
+		if (game->m.color == 1)
+			draw_column(game, i, x, &game->no);
+		if (game->m.color == 2)
+			draw_column(game, i, x, &game->so);
+		if (game->m.color == 3)
+			draw_column(game, i, x, &game->we);
+		if (game->m.color == 4)
+			draw_column(game, i, x, &game->ea);
+		i ++;
 	}
 	while (m->drawEnd < screenHeight)
 	{
-		my_mlx_pixel_put(m, x, m->drawEnd, /*0xFF00FF*/game->c_col.color);
+		my_mlx_pixel_put(m, x, m->drawEnd, game->c_col.color);
 		m->drawEnd ++;
 	}
 }
@@ -965,23 +970,6 @@ void	init_variables(t_data *m, t_game *game)
 	m->moveSpeed = 0.1;
 }
 
-void	draw_texture(t_game *game)
-{
-	int	i;
-
-	i = game->m.drawStart;
-	while (i < game->m.drawEnd)
-	{
-		game->texY = (int)game->texPos & (game->texHeight - 1);
-		game->texPos += game->step;
-		game->m.color = 
-		// Uint32 color = texture[texNum][texHeight * texY + texX];
-        // if(side == 1) color = (color >> 1) & 8355711;
-        // buffer[y][x] = color;
-		i ++;
-	}
-}
-
 void	ft_draw(t_game *game)
 {
 	int	x;
@@ -1044,18 +1032,18 @@ void	ft_draw(t_game *game)
 		if (game->m.side == 0)
 		{
 			if (game->m.rayDirX > 0)
-				game->m.color = 0xfe9c1c;
+				game->m.color = 1;
 			else
-				game->m.color = 0xf16f38;
+				game->m.color = 2;
 			game->m.perpWallDist = (game->m.sideDistX - game->m.deltaDistX);
 		}
 		else
 		{
 			game->m.perpWallDist = (game->m.sideDistY - game->m.deltaDistY);
 			if (game->m.rayDirY > 0)
-				game->m.color = 0xfe661c;
+				game->m.color = 3;
 			else
-				game->m.color = 0xf19438;
+				game->m.color = 4;
 		
 		}
 		game->m.lineHeight = (int)(screenHeight / game->m.perpWallDist);
@@ -1065,8 +1053,7 @@ void	ft_draw(t_game *game)
 		game->m.drawEnd = game->m.lineHeight / 2 + screenHeight / 2;
 		if(game->m.drawEnd >= screenHeight)
 			game->m.drawEnd = screenHeight - 1;
-		//
-		/*game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
+		game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
 		if (game->m.side == 0)
 			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirY;
 		else
@@ -1078,8 +1065,7 @@ void	ft_draw(t_game *game)
 		if (game->m.side == 1 && game->m.rayDirY < 0)
 			game->texX = game->texWidth - game->texX - 1;
 		game->step = 1.0 * game->texHeight / game->m.lineHeight;
-		*///game->texPos = (game->m.drawStart - screenHeight / 2 + game->m.lineHeight / 2) * game->step;
-		//draw_texture(game);
+		game->texPos = (game->m.drawStart - screenHeight / 2 + game->m.lineHeight / 2) * game->step;
 		verLine(&game->m, x, game);
 		x ++;
 	}

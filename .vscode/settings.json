@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "__debug": "c",
+        "algorithm": "c",
+        "atomic": "c",
+        "chrono": "c",
+        "mutex": "c"
+    }
+}
