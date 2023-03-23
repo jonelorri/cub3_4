@@ -581,7 +581,7 @@ int	ft_check_tex(t_game *game)
 		game->ea.line_length = 0;
 		game->ea.bits_per_pixel = 0;
 		game->ea.endian = 0;
-		game->ea.addr = mlx_get_data_addr(game->no.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
+		game->ea.addr = mlx_get_data_addr(game->ea.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
 	}
 	if (!game->ea.img || !game->ea_tex)
 		return (-1);

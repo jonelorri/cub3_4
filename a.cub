@@ -4,8 +4,8 @@ C 93,220,121
 
 
 NO ./42_textura.xpm
-SO ./42_textura4.xpm
-WE ./42_textura2.xpm
+SO ./42_textura2.xpm
+WE ./42_textura3.xpm
 EA ./42_textura4.xpm
 
 
