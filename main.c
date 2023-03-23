@@ -1074,7 +1074,7 @@ void	ft_draw(t_game *game)
 		game->m.drawEnd = game->m.lineHeight / 2 + screenHeight / 2;
 		if(game->m.drawEnd >= screenHeight)
 			game->m.drawEnd = screenHeight - 1;
-		game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
+		//game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
 		if (game->m.side == 0)
 			game->wallx = game->m.posY + game->m.perpWallDist * game->m.rayDirY;
 		else
