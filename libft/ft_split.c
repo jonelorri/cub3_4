@@ -101,13 +101,11 @@ static char	**ft_res_pointer(int ptr)
 
 char	**ft_split(char const *s, char c)
 {
-	int		i;
 	int		ptr;
 	char	**array;
 
 	if (!s)
 		return (NULL);
-	i = 0;
 	ptr = ft_len_ptr((char *)s, c);
 	array = ft_res_pointer(ptr);
 	if (ptr > 0)

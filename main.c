@@ -546,19 +546,43 @@ int	ft_check_tex(t_game *game)
 {
 	//printf("%x\n", -3);
 	if (game->no_tex)
+	{
 		game->no.img = mlx_xpm_file_to_image(game->mlx, game->no_tex, &game->no.w, &game->no.h);
+		game->no.line_length = 0;
+		game->no.bits_per_pixel = 0;
+		game->no.endian = 0;
+		game->no.addr = mlx_get_data_addr(game->no.img, &game->no.bits_per_pixel, &game->no.line_length, &game->no.endian);
+	}
 	if (!game->no.img || !game->no_tex)
 		return (-1);
 	if (game->so_tex)
+	{
 		game->so.img = mlx_xpm_file_to_image(game->mlx, game->so_tex, &game->so.w, &game->so.h);
+		game->so.line_length = 0;
+		game->so.bits_per_pixel = 0;
+		game->so.endian = 0;
+		game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
+	}
 	if (!game->so.img || !game->so_tex)
 		return (-1);
 	if (game->we_tex)
+	{
 		game->we.img = mlx_xpm_file_to_image(game->mlx, game->we_tex, &game->we.w, &game->we.h);
+		game->we.line_length = 0;
+		game->we.bits_per_pixel = 0;
+		game->we.endian = 0;
+		game->we.addr = mlx_get_data_addr(game->we.img, &game->we.bits_per_pixel, &game->we.line_length, &game->we.endian);
+	}
 	if (!game->we.img || !game->we_tex)
 		return (-1);
 	if (game->ea_tex)
+	{
 		game->ea.img = mlx_xpm_file_to_image(game->mlx, game->ea_tex, &game->ea.w, &game->ea.h);
+		game->ea.line_length = 0;
+		game->ea.bits_per_pixel = 0;
+		game->ea.endian = 0;
+		game->ea.addr = mlx_get_data_addr(game->no.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
+	}
 	if (!game->ea.img || !game->ea_tex)
 		return (-1);
 	printf("addr = %p\n", game->no.img);
@@ -850,16 +874,15 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 //* //
-unsigned int	get_mlx_pixel_color(t_game *game, t_img *tex, int x, int y)
+unsigned int	get_mlx_pixel_color(t_img *tex, int x, int y)
 {
 	char			*dst;
 	int				offset;
 	unsigned int	color;
 
-	offset = (y * game->m.lineLength + x * (game->m.bits_per_pixel / 8));
-	dst = tex->img + offset;
+	offset = (y * tex->line_length + x * (tex->bits_per_pixel / 8));
+	dst = tex->addr + offset;
 	color = *(unsigned int *)dst;
-	//printf("Color = %u\n", color);
 	return (color);
 }
 
@@ -867,10 +890,9 @@ unsigned int	get_mlx_pixel_color(t_game *game, t_img *tex, int x, int y)
 // {
 // 	my_mlx_pixel_put(data, ray.x, ray.y, get_mlx_pixel_color(&texture, ray.tex_x, ray.tex_y));
 // }
-static void	draw_column(t_game *game, int y, int x, t_img *tex)
+static void	draw_column(t_game *game, int x, int y, t_img *tex)
 {
-	printf("addr = %p\n", tex->img);
-	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(game, tex, game->texX, game->texY));
+	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(tex, game->texX, game->texY));
 }
 //* //
 void	verLine(t_data *m, int x, t_game *game)
@@ -878,24 +900,23 @@ void	verLine(t_data *m, int x, t_game *game)
 	int i;
 
 	i = 0;
-	printf("A\n");
 	while (i < m->drawStart)
 	{
 		my_mlx_pixel_put(m, x, i, game->f_col.color);
 		i ++;
 	}
-	while (i < m->drawEnd)
+	while (i < screenHeight)
 	{
 		game->texY = (int)game->texPos & (game->texHeight - 1);
 		game->texPos += game->step;
 		if (game->m.color == 1)
-			draw_column(game, i, x, &game->no);
+			draw_column(game, x, i, &game->no);
 		if (game->m.color == 2)
-			draw_column(game, i, x, &game->so);
+			draw_column(game, x, i, &game->we);
 		if (game->m.color == 3)
-			draw_column(game, i, x, &game->we);
+			draw_column(game, x, i, &game->so);
 		if (game->m.color == 4)
-			draw_column(game, i, x, &game->ea);
+			draw_column(game, x, i, &game->ea);
 		i ++;
 	}
 	while (m->drawEnd < screenHeight)
@@ -1055,11 +1076,11 @@ void	ft_draw(t_game *game)
 			game->m.drawEnd = screenHeight - 1;
 		game->texNum = game->newMap[game->m.mapX][game->m.mapY] - 1;
 		if (game->m.side == 0)
-			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirY;
+			game->wallx = game->m.posY + game->m.perpWallDist * game->m.rayDirY;
 		else
 			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirX;
 		game->wallx -= floor(game->wallx);
-		game->texX = (int)(game->wallx * (float)game->texWidth);
+		game->texX = (int)(game->wallx * (double)game->texWidth);
 		if (game->m.side == 0 && game->m.rayDirX > 0)
 			game->texX = game->texWidth - game->texX - 1;
 		if (game->m.side == 1 && game->m.rayDirY < 0)
