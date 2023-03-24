@@ -10,8 +10,12 @@
 
 void	position_values(t_data *data, int i, int j, t_game *game)
 {
-	if (data->posY == i && data->posX == j)
+	//printf("%f\n", data->posY);
+	if ((int)data->posY == i && (int)data->posX == j)
+	{
+		//printf("no entro\n");
 		printf("🎮");
+}
 	else if (game->map[i][j] == ' ')
 		printf("  ");
 	else if (game->map[i][j] == '1')
@@ -35,9 +39,11 @@ void	change_value(t_data *data,  t_game *game)
 	int	i;
 	int	j;
 
+	printf("*****************\n");
 	i = -1;
 	while (game->map[++i])
 	{
+		//printf("%s\n", game->map[i]);
 		j = -1;
 		while (++j < (int)ft_strlen(game->map[i]))
 		{
@@ -551,40 +557,40 @@ int	ft_check_tex(t_game *game)
 		game->no.line_length = 0;
 		game->no.bits_per_pixel = 0;
 		game->no.endian = 0;
-		game->no.addr = mlx_get_data_addr(game->no.img, &game->no.bits_per_pixel, &game->no.line_length, &game->no.endian);
 	}
 	if (!game->no.img || !game->no_tex)
 		return (-1);
+	game->no.addr = mlx_get_data_addr(game->no.img, &game->no.bits_per_pixel, &game->no.line_length, &game->no.endian);
 	if (game->so_tex)
 	{
 		game->so.img = mlx_xpm_file_to_image(game->mlx, game->so_tex, &game->so.w, &game->so.h);
 		game->so.line_length = 0;
 		game->so.bits_per_pixel = 0;
 		game->so.endian = 0;
-		game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
 	}
 	if (!game->so.img || !game->so_tex)
 		return (-1);
+		game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
 	if (game->we_tex)
 	{
 		game->we.img = mlx_xpm_file_to_image(game->mlx, game->we_tex, &game->we.w, &game->we.h);
 		game->we.line_length = 0;
 		game->we.bits_per_pixel = 0;
 		game->we.endian = 0;
-		game->we.addr = mlx_get_data_addr(game->we.img, &game->we.bits_per_pixel, &game->we.line_length, &game->we.endian);
 	}
 	if (!game->we.img || !game->we_tex)
 		return (-1);
+	game->we.addr = mlx_get_data_addr(game->we.img, &game->we.bits_per_pixel, &game->we.line_length, &game->we.endian);
 	if (game->ea_tex)
 	{
 		game->ea.img = mlx_xpm_file_to_image(game->mlx, game->ea_tex, &game->ea.w, &game->ea.h);
 		game->ea.line_length = 0;
 		game->ea.bits_per_pixel = 0;
 		game->ea.endian = 0;
-		game->ea.addr = mlx_get_data_addr(game->ea.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
 	}
 	if (!game->ea.img || !game->ea_tex)
 		return (-1);
+	game->ea.addr = mlx_get_data_addr(game->ea.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
 	printf("addr = %p\n", game->no.img);
 	printf("addr = %p\n", game->so.img);
 	printf("addr = %p\n", game->we.img);
@@ -744,11 +750,16 @@ void	ft_move_up(t_game *game, int key)
 
 void	ft_move_down(t_game *game, int key)
 {
+	double pruebaX;
+	double pruebaY;
+
+	pruebaX = game->m.posX - game->m.dirX * game->m.moveSpeed;
+	pruebaY = game->m.posY - game->m.dirY * game->m.moveSpeed;
 	key = 0;//!
-	if(game->map[(int)(game->m.posX - game->m.dirX * game->m.moveSpeed)][(int)game->m.posY] != '1')
-		game->m.posX -= game->m.dirX * game->m.moveSpeed;
-    if(game->map[(int)(game->m.posX)][(int)(game->m.posY - game->m.dirY * game->m.moveSpeed)] != '1')
-		game->m.posY -= game->m.dirY * game->m.moveSpeed;
+	if(game->map[(int)game->m.posY][(int)(pruebaX)] != '1')
+		game->m.posX = pruebaX;
+   if(game->map[(int)(pruebaY)][(int)(game->m.posX)] != '1')
+		game->m.posY = pruebaY;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, screenWidth, screenHeight);
 	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
@@ -765,11 +776,11 @@ void	ft_move_left(t_game *game, int key)
 	pruebaX = game->m.posX + ( game->m.dirY) * game->m.moveSpeed;
 	pruebaY = game->m.posY -  game->m.dirX * game->m.moveSpeed;
 	
-	if(!(game->map[(int)(game->m.posY)][(int)(pruebaX)] == '1'))
+	if(game->map[(int)game->m.posY][(int)(pruebaX)] != '1')
 		game->m.posX = pruebaX;
 	//	game->m.posX += (- game->m.dirY) * game->m.moveSpeed;
 
-	if(game->map[(int)(pruebaX)][(int)(game->m.posX)] != '1')
+	if(game->map[(int)(pruebaY)][(int)(game->m.posX)] != '1')
 		game->m.posY = pruebaY;
 		//game->m.posY +=  game->m.dirX * game->m.moveSpeed;
 	/*if(game->map[(int)(pruebaX)][(int)(game->m.posX)] != '1')
@@ -815,7 +826,6 @@ void	ft_move_right(t_game *game, int key)
 
 int	key_event(int key_code, t_game *game)
 {
-	change_value(&game->m, game);
 	if (key_code == 53)
 		exit(0);
 	
@@ -827,6 +837,7 @@ int	key_event(int key_code, t_game *game)
 		ft_move_right(game, key_code);
 	 if (key_code == 0)
 		ft_move_left(game, key_code);
+	change_value(&game->m, game);
 	printf("char string que sigue = %s\n", game->map[(int)(game->m.posY)] + (int)game->m.posX);
 	printf("x = %f, y = %f\n", game->m.posX, game->m.posY);
 	if (key_code == 124)
@@ -902,7 +913,7 @@ void	verLine(t_data *m, int x, t_game *game)
 	i = 0;
 	while (i < m->drawStart)
 	{
-		my_mlx_pixel_put(m, x, i, game->f_col.color);
+		my_mlx_pixel_put(m, x, i, game->c_col.color);
 		i ++;
 	}
 	while (i < screenHeight)
@@ -921,7 +932,7 @@ void	verLine(t_data *m, int x, t_game *game)
 	}
 	while (m->drawEnd < screenHeight)
 	{
-		my_mlx_pixel_put(m, x, m->drawEnd, game->c_col.color);
+		my_mlx_pixel_put(m, x, m->drawEnd, game->f_col.color);
 		m->drawEnd ++;
 	}
 }
