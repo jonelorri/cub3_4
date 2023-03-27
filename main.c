@@ -622,19 +622,19 @@ void	ft_move_up(t_game *game, int key)
 	double	pruebaY;
 
 	key = 0;
-	pruebaX = game->m.posX + game->m.dirX * game->m.moveSpeed;
-	pruebaY = game->m.posY + game->m.dirY * game->m.moveSpeed;
-	if (game->map[(int)game->m.posY][(int)(pruebaX)] != '1')
+	pruebaX = game->m.pos_x + game->m.dir_x * game->m.move_speed;
+	pruebaY = game->m.pos_y + game->m.dir_y * game->m.move_speed;
+	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
 	{
-		game->m.posX = pruebaX;
+		game->m.pos_x = pruebaX;
 	}
-	if (game->map[(int)(pruebaY)][(int)(game->m.posX)] != '1')
+	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
 	{
-		game->m.posY = pruebaY;
+		game->m.pos_y = pruebaY;
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -644,16 +644,16 @@ void	ft_move_down(t_game *game, int key)
 	double	pruebaX;
 	double	pruebaY;
 
-	pruebaX = game->m.posX - game->m.dirX * game->m.moveSpeed;
-	pruebaY = game->m.posY - game->m.dirY * game->m.moveSpeed;
+	pruebaX = game->m.pos_x - game->m.dir_x * game->m.move_speed;
+	pruebaY = game->m.pos_y - game->m.dir_y * game->m.move_speed;
 	key = 0;
-	if (game->map[(int)game->m.posY][(int)(pruebaX)] != '1')
-		game->m.posX = pruebaX;
-	if (game->map[(int)(pruebaY)][(int)(game->m.posX)] != '1')
-		game->m.posY = pruebaY;
+	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
+		game->m.pos_x = pruebaX;
+	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
+		game->m.pos_y = pruebaY;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -664,15 +664,15 @@ void	ft_move_left(t_game *game, int key)
 	double	pruebaY;
 
 	key = 0;
-	pruebaX = game->m.posX + ( game->m.dirY) * game->m.moveSpeed;
-	pruebaY = game->m.posY -  game->m.dirX * game->m.moveSpeed;
-	if (game->map[(int)game->m.posY][(int)(pruebaX)] != '1')
-		game->m.posX = pruebaX;
-	if (game->map[(int)(pruebaY)][(int)(game->m.posX)] != '1')
-		game->m.posY = pruebaY;
+	pruebaX = game->m.pos_x + ( game->m.dir_y) * game->m.move_speed;
+	pruebaY = game->m.pos_y -  game->m.dir_x * game->m.move_speed;
+	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
+		game->m.pos_x = pruebaX;
+	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
+		game->m.pos_y = pruebaY;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -683,19 +683,19 @@ void	ft_move_right(t_game *game, int key)
 	double	pruebaY;
 
 	key = 0;
-	pruebaX = game->m.posX - ( game->m.dirY) * game->m.moveSpeed;
-	pruebaY = game->m.posY + game->m.dirX * game->m.moveSpeed;
-	if (game->map[(int)(pruebaY)][(int)game->m.posX] != '1')
+	pruebaX = game->m.pos_x - ( game->m.dir_y) * game->m.move_speed;
+	pruebaY = game->m.pos_y + game->m.dir_x * game->m.move_speed;
+	if (game->map[(int)(pruebaY)][(int)game->m.pos_x] != '1')
 	{
-		game->m.posY = pruebaY;
+		game->m.pos_y = pruebaY;
 	}
-	if (game->map[(int)(game->m.posY)][(int)(pruebaX)] != '1')
+	if (game->map[(int)(game->m.pos_y)][(int)(pruebaX)] != '1')
 	{
-		game->m.posX = pruebaX;
+		game->m.pos_x = pruebaX;
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -717,29 +717,29 @@ int	key_event(int key_code, t_game *game)
 		ft_move_left(game, key_code);
 	if (key_code == 124)
 	{
-		oldDirX = game->m.dirX;
-		game->m.dirX = game->m.dirX * cos(-game->m.rotSpeed) - game->m.dirY * sin(-game->m.rotSpeed);
-		game->m.dirY = oldDirX * sin(-game->m.rotSpeed) + game->m.dirY * cos(-game->m.rotSpeed);
-		oldPlaneX = game->m.planeX;
-		game->m.planeX = game->m.planeX * cos(-game->m.rotSpeed) - game->m.planeY * sin(-game->m.rotSpeed);
-		game->m.planeY = oldPlaneX * sin(-game->m.rotSpeed) + game->m.planeY * cos(-game->m.rotSpeed);
+		oldDirX = game->m.dir_x;
+		game->m.dir_x = game->m.dir_x * cos(-game->m.rot_speed) - game->m.dir_y * sin(-game->m.rot_speed);
+		game->m.dir_y = oldDirX * sin(-game->m.rot_speed) + game->m.dir_y * cos(-game->m.rot_speed);
+		oldPlaneX = game->m.plane_x;
+		game->m.plane_x = game->m.plane_x * cos(-game->m.rot_speed) - game->m.plane_y * sin(-game->m.rot_speed);
+		game->m.plane_y = oldPlaneX * sin(-game->m.rot_speed) + game->m.plane_y * cos(-game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 		ft_draw(game);
 		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 	}
 	else if (key_code == 123)
 	{
-		oldDirX = game->m.dirX;
-		game->m.dirX = game->m.dirX * cos(game->m.rotSpeed) - game->m.dirY * sin(game->m.rotSpeed);
-		game->m.dirY = oldDirX * sin(game->m.rotSpeed) + game->m.dirY * cos(game->m.rotSpeed);
-		oldPlaneX = game->m.planeX;
-		game->m.planeX = game->m.planeX * cos(game->m.rotSpeed) - game->m.planeY * sin(game->m.rotSpeed);
-		game->m.planeY = oldPlaneX * sin(game->m.rotSpeed) + game->m.planeY * cos(game->m.rotSpeed);
+		oldDirX = game->m.dir_x;
+		game->m.dir_x = game->m.dir_x * cos(game->m.rot_speed) - game->m.dir_y * sin(game->m.rot_speed);
+		game->m.dir_y = oldDirX * sin(game->m.rot_speed) + game->m.dir_y * cos(game->m.rot_speed);
+		oldPlaneX = game->m.plane_x;
+		game->m.plane_x = game->m.plane_x * cos(game->m.rot_speed) - game->m.plane_y * sin(game->m.rot_speed);
+		game->m.plane_y = oldPlaneX * sin(game->m.rot_speed) + game->m.plane_y * cos(game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.lineLength, &game->m.endian);
+		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
 		ft_draw(game);
 		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 	}
@@ -750,7 +750,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->lineLength + x * (data->bits_per_pixel / 8));
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -776,7 +776,7 @@ void	ver_line(t_data *m, int x, t_game *game)
 	int	i;
 
 	i = 0;
-	while (i < m->drawStart)
+	while (i < m->draw_start)
 	{
 		my_mlx_pixel_put(m, x, i, game->c_col.color);
 		i ++;
@@ -795,10 +795,10 @@ void	ver_line(t_data *m, int x, t_game *game)
 			draw_column(game, x, i, &game->ea);
 		i ++;
 	}
-	while (m->drawEnd < SCREENHEIGHT)
+	while (m->draw_end < SCREENHEIGHT)
 	{
-		my_mlx_pixel_put(m, x, m->drawEnd, game->f_col.color);
-		m->drawEnd ++;
+		my_mlx_pixel_put(m, x, m->draw_end, game->f_col.color);
+		m->draw_end ++;
 	}
 }
 
@@ -828,42 +828,42 @@ void	init_variables(t_data *m, t_game *game)
 	char	a;
 
 	a = ft_find_pj(game);
-	m->posX = game->p.x + 0.5;
-	m->posY = game->p.y + 0.5;
+	m->pos_x = game->p.x + 0.5;
+	m->pos_y = game->p.y + 0.5;
 	game->texHeight = 64;
 	game->texWidth = 64;
 	if (a == 'E')
 	{
-		m->dirX = 1;
-		m->dirY = 0;
-		m->planeX = 0;
-		m->planeY = 0.66;
+		m->dir_x = 1;
+		m->dir_y = 0;
+		m->plane_x = 0;
+		m->plane_y = 0.66;
 	}
 	else if (a == 'W')
 	{
-		m->dirX = -1;
-		m->dirY = 0;
-		m->planeX = 0;
-		m->planeY = -0.66;
+		m->dir_x = -1;
+		m->dir_y = 0;
+		m->plane_x = 0;
+		m->plane_y = -0.66;
 	}
 	else if (a == 'N')
 	{
-		m->dirX = 0;
-		m->dirY = -1;
-		m->planeX = 0.66;
-		m->planeY = 0;
+		m->dir_x = 0;
+		m->dir_y = -1;
+		m->plane_x = 0.66;
+		m->plane_y = 0;
 	}
 	else if (a == 'S')
 	{
-		m->dirX = 0;
-		m->dirY = 1;
-		m->planeX = -0.66;
-		m->planeY = 0;
+		m->dir_x = 0;
+		m->dir_y = 1;
+		m->plane_x = -0.66;
+		m->plane_y = 0;
 	}
 	m->time = 0;
-	m->oldTime = 0;
-	m->rotSpeed = 25;
-	m->moveSpeed = 0.1;
+	m->old_time = 0;
+	m->rot_speed = 25;
+	m->move_speed = 0.1;
 }
 
 void	ft_draw(t_game *game)
@@ -873,92 +873,92 @@ void	ft_draw(t_game *game)
 	x = 0;
 	while (x < SCREENWIDTH)
 	{
-		game->m.cameraX = 2 * x / (double)SCREENWIDTH - 1;
-		game->m.rayDirX = game->m.dirX + game->m.planeX * game->m.cameraX;
-		game->m.rayDirY = game->m.dirY + game->m.planeY * game->m.cameraX;
-		game->m.mapX = (int)game->m.posX;
-		game->m.mapY = (int)game->m.posY;
-		if (game->m.rayDirX == 0)
-			game->m.deltaDistX = exp(30);
+		game->m.camera_x = 2 * x / (double)SCREENWIDTH - 1;
+		game->m.rayDir_x = game->m.dir_x + game->m.plane_x * game->m.camera_x;
+		game->m.rayDir_y = game->m.dir_y + game->m.plane_y * game->m.camera_x;
+		game->m.map_x = (int)game->m.pos_x;
+		game->m.map_y = (int)game->m.pos_y;
+		if (game->m.rayDir_x == 0)
+			game->m.delta_dist_x = exp(30);
 		else
-			game->m.deltaDistX = fabs(1.0 / game->m.rayDirX);
-		if (game->m.rayDirY == 0)
-			game->m.deltaDistY = exp(30);
+			game->m.delta_dist_x = fabs(1.0 / game->m.rayDir_x);
+		if (game->m.rayDir_y == 0)
+			game->m.delta_dist_y = exp(30);
 		else
-			game->m.deltaDistY = fabs(1.0 / game->m.rayDirY);
+			game->m.delta_dist_y = fabs(1.0 / game->m.rayDir_y);
 		game->m.hit = 0;
-		if (game->m.rayDirX < 0)
+		if (game->m.rayDir_x < 0)
 		{
-			game->m.stepX = -1;
-			game->m.sideDistX = (game->m.posX - game->m.mapX) * game->m.deltaDistX;
+			game->m.step_x = -1;
+			game->m.side_dist_x = (game->m.pos_x - game->m.map_x) * game->m.delta_dist_x;
 		}
 		else
 		{
-			game->m.stepX = 1;
-			game->m.sideDistX = (game->m.mapX + 1.0 - game->m.posX) * game->m.deltaDistX;
+			game->m.step_x = 1;
+			game->m.side_dist_x = (game->m.map_x + 1.0 - game->m.pos_x) * game->m.delta_dist_x;
 		}
-		if (game->m.rayDirY < 0)
+		if (game->m.rayDir_y < 0)
 		{
-			game->m.stepY = -1;
-			game->m.sideDistY = (game->m.posY - game->m.mapY) * game->m.deltaDistY;
+			game->m.step_y = -1;
+			game->m.side_dist_y = (game->m.pos_y - game->m.map_y) * game->m.delta_dist_y;
 		}
 		else
 		{
-			game->m.stepY = 1;
-			game->m.sideDistY = (game->m.mapY + 1.0 - game->m.posY) * game->m.deltaDistY;
+			game->m.step_y = 1;
+			game->m.side_dist_y = (game->m.map_y + 1.0 - game->m.pos_y) * game->m.delta_dist_y;
 		}
 		while (game->m.hit == 0)
 		{
-			if (game->m.sideDistX < game->m.sideDistY)
+			if (game->m.side_dist_x < game->m.side_dist_y)
 			{
-				game->m.sideDistX += game->m.deltaDistX;
-				game->m.mapX += game->m.stepX;
+				game->m.side_dist_x += game->m.delta_dist_x;
+				game->m.map_x += game->m.step_x;
 				game->m.side = 0;
 			}
 			else
 			{
-				game->m.sideDistY += game->m.deltaDistY;
-				game->m.mapY += game->m.stepY;
+				game->m.side_dist_y += game->m.delta_dist_y;
+				game->m.map_y += game->m.step_y;
 				game->m.side = 1;
 			}
-			if (game->map[game->m.mapY][game->m.mapX] == '1')
+			if (game->map[game->m.map_y][game->m.map_x] == '1')
 				game->m.hit = 1;
 		}
 		if (game->m.side == 0)
 		{
-			if (game->m.rayDirX > 0)
+			if (game->m.rayDir_x > 0)
 				game->m.color = 1;
 			else
 				game->m.color = 2;
-			game->m.perpWallDist = (game->m.sideDistX - game->m.deltaDistX);
+			game->m.perp_wall_dist = (game->m.side_dist_x - game->m.delta_dist_x);
 		}
 		else
 		{
-			game->m.perpWallDist = (game->m.sideDistY - game->m.deltaDistY);
-			if (game->m.rayDirY > 0)
+			game->m.perp_wall_dist = (game->m.side_dist_y - game->m.delta_dist_y);
+			if (game->m.rayDir_y > 0)
 				game->m.color = 3;
 			else
 				game->m.color = 4;
 		}
-		game->m.lineHeight = (int)(SCREENHEIGHT / game->m.perpWallDist);
-		game->m.drawStart = -game->m.lineHeight / 2 + SCREENHEIGHT / 2;
-		if (game->m.drawStart < 0)
-			game->m.drawStart = 0;
-		game->m.drawEnd = game->m.lineHeight / 2 + SCREENHEIGHT / 2;
-		if (game->m.drawEnd >= SCREENHEIGHT)
-			game->m.drawEnd = SCREENHEIGHT - 1;
+		game->m.line_h = (int)(SCREENHEIGHT / game->m.perp_wall_dist);
+		game->m.draw_start = -game->m.line_h / 2 + SCREENHEIGHT / 2;
+		if (game->m.draw_start < 0)
+			game->m.draw_start = 0;
+		game->m.draw_end = game->m.line_h / 2 + SCREENHEIGHT / 2;
+		if (game->m.draw_end >= SCREENHEIGHT)
+			game->m.draw_end = SCREENHEIGHT - 1;
 		if (game->m.side == 0)
-			game->wallx = game->m.posY + game->m.perpWallDist * game->m.rayDirY;
+			game->wallx = game->m.pos_y + game->m.perp_wall_dist * game->m.rayDir_y;
 		else
-			game->wallx = game->m.posX + game->m.perpWallDist * game->m.rayDirX;
+			game->wallx = game->m.pos_x + game->m.perp_wall_dist * game->m.rayDir_x;
 		game->wallx -= floor(game->wallx);
 		game->texX = (int)(game->wallx * (double)game->texWidth);
-		if (game->m.side == 0 && game->m.rayDirX > 0)
+		if (game->m.side == 0 && game->m.rayDir_x > 0)
 			game->texX = game->texWidth - game->texX - 1;
-		if (game->m.side == 1 && game->m.rayDirY < 0)
+		if (game->m.side == 1 && game->m.rayDir_y < 0)
 			game->texX = game->texWidth - game->texX - 1;
-		game->step = 1.0 * game->texHeight / game->m.lineHeight;
-		game->texPos = (game->m.drawStart - SCREENHEIGHT / 2 + game->m.lineHeight / 2) * game->step;
+		game->step = 1.0 * game->texHeight / game->m.line_h;
+		game->texPos = (game->m.draw_start - SCREENHEIGHT / 2 + game->m.line_h / 2) * game->step;
 		ver_line(&game->m, x, game);
 		x ++;
 	}
@@ -1019,7 +1019,7 @@ int	main(int argc, char **argv)
 	fill_new_map(&game);
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");
 	game.m.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
-	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bits_per_pixel, &game.m.lineLength, &game.m.endian);
+	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bits_per_pixel, &game.m.line_length, &game.m.endian);
 	ft_draw(&game);
 	mlx_put_image_to_window(game.mlx, game.win, game.m.img, 0, 0);
 	mlx_hook(game.win, 2, 0, &key_event, &game);
