@@ -143,6 +143,4 @@ int	    ft_check_charac(t_game *g, int size);
 int		ft_controlls(int keykode, t_game *g);
 int		ft_close(t_game *g);
 
-void    draw_map(t_data *m, int screenWidth, int screenHeight, int **worldMap);
-
 #endif

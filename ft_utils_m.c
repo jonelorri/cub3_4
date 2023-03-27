@@ -87,10 +87,8 @@ int	ft_close_map_ext(char *str)
 	int	i;
 
 	i = 0;
-	printf("Aaaaaaaa str = %s\n", str);
 	while (str[i])
 	{
-			printf("char *%c*\n", str[i]);
 		if (str[i] != '1' && str[i] != ' ' && str[i] != '\n' && str[i] != '\0')
 		{
 			printf("Error\nEl mapa no está cerrado\n");
@@ -101,9 +99,7 @@ int	ft_close_map_ext(char *str)
 	return (0);
 }
 
-//int ft_check_car(int x, int y, )
-
-int	ft_close_map_check(char **map, int mh) // hacer un bucle mientras el tamaño de las lineas sea el mismo
+int	ft_close_map_check(char **map, int mh)
 {
 	int x;
 	int y;
@@ -113,7 +109,6 @@ int	ft_close_map_check(char **map, int mh) // hacer un bucle mientras el tamaño
 	mh = ft_malloc_dim(map);
 	x = 0;
 	y = 0;
-	//printf("\n\n+%s+\n\n", map[0]);
 	while (map[y] && y < mh)
 	{
 		if (y == 0)
@@ -128,7 +123,6 @@ int	ft_close_map_check(char **map, int mh) // hacer un bucle mientras el tamaño
 			{
 				if (y < mh - 1 && x > (int)ft_strlen(map[y + 1]))
 				{
-					printf("AAAAAAA1\n");
 					if (ft_close_map_ext(map[y] + x))
 						return (1);
 				}
@@ -137,34 +131,28 @@ int	ft_close_map_check(char **map, int mh) // hacer un bucle mientras el tamaño
 						return (1);
 				if (map[y][x] == '0' && (map[y][x + 1] == ' ' || map[y][x + 1] == '\0' || map[y][x + 1] == '\n'))
 				{
-					printf("AAAAAAA2\n");
-						return (1);
+					return (1);
 				}
 				if (x < (int)ft_strlen(map[y]) && map[y][x] == ' ' && (map[y][x + 1] != '1' && map[y][x + 1] != '\n' && map[y][x + 1] != ' ' && map[y][x + 1] != '\0'))
 				{
-					printf("AAAAAAA3\n");
-						return (1);
+					return (1);
 				}
 				if (map[y][x] == ' ' && (map[y][x - 1] != '1' && map[y][x - 1] != '\n' && map[y][x - 1] != ' '))
 				{
-					printf("AAAAAAA4\n");
-						return (1);
+					return (1);
 				}
 				if (y < mh - 1 && (int)ft_strlen(map[y + 1]) >= x && (map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'E' || map[y][x] == 'W' || map[y][x] == 'S') && (map[y + 1][x] == ' '  || map[y + 1][x] == '\n' || map[y + 1][x] == '\0'))
-				{ 
-					printf("%c, compara con %c\n", map[y][x], map[y][x]);
-						return (1);
+				{
+					return (1);
 				}
 				if (y > 0 && (int)ft_strlen(map[y - 1]) >= x && (map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'E' || map[y][x] == 'W' || map[y][x] == 'S') && (map[y - 1][x] == ' '  || map[y - 1][x] == '\n' || map[y - 1][x] == '\0'))
 				{
-					printf("AAAAAAA6\n");
-						return (1);
+					return (1);
 				}
 			
 			}
 			if (map[y][x] == ' ' && x == 0)
 			{
-				//printf("a\n");
 				if (x < (int)ft_strlen(map[y])  && (map[y][x + 1] != '1' && map[y][x + 1] != '\n' && map[y][x + 1] != ' ' && map[y][x + 1] != '\0'))
 					return (1);
 				if (y > 0 && (int)ft_strlen(map[y - 1])  && (map[y - 1][x] != ' ' && map[y - 1][x] != '1' && map[y - 1][x] != '\n' && map[y - 1][x] != '\0'))

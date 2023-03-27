@@ -54,8 +54,6 @@ void	ft_map_p(char *s, t_game *g, int *p, int j)
 	{
 		if (s[i] == 'N' || s[i] == 'S' || s[i] == 'E' || s[i] == 'W')
 		{
-			printf("cantidad de jugadores = %d\n", *p);
-			printf("%d, %d, \n",i, j);
 			g->p.x = i;
 			g->p.y = j;
 			g->p.check = 1;
