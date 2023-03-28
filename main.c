@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_m.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/09 17:17:10 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/28 19:50:01 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	ft_get_map2(t_game *game)
 	i = 0;
 	ft_file_copy(game);
 	t_map_trim(game->file_save);
-	while (game->file_save[i] && game->file_save[i][0] && game->file_save[i][0] != '1' )
+	while (game->file_save[i] && game->file_save[i][0] 
+		&& game->file_save[i][0] != '1' )
 	{
 		i++;
 	}
@@ -64,7 +65,8 @@ int	ft_get_map3(t_game *game)
 			game->c_check = 1;
 		i++;
 	}
-	if (game->so_check + game->ea_check + game->we_check + game->no_check + game->c_check + game->f_check != 6)
+	if (game->so_check + game->ea_check + game->we_check \
+	+ game->no_check + game->c_check + game->f_check != 6)
 	{
 		printf("Error, invalid map\n");
 		return (1);
@@ -75,45 +77,25 @@ int	ft_get_map3(t_game *game)
 int	ft_check_tex(t_game *game)
 {
 	if (game->no_tex)
-	{
 		game->no.img = mlx_xpm_file_to_image(game->mlx, game->no_tex, &game->no.w, &game->no.h);
-		game->no.line_length = 0;
-		game->no.bits_per_pixel = 0;
-		game->no.endian = 0;
-	}
 	if (!game->no.img || !game->no_tex)
 		return (-1);
-	game->no.addr = mlx_get_data_addr(game->no.img, &game->no.bits_per_pixel, &game->no.line_length, &game->no.endian);
+	game->no.addr = mlx_get_data_addr(game->no.img, &game->no.bpp, &game->no.line_length, &game->no.endian);
 	if (game->so_tex)
-	{
 		game->so.img = mlx_xpm_file_to_image(game->mlx, game->so_tex, &game->so.w, &game->so.h);
-		game->so.line_length = 0;
-		game->so.bits_per_pixel = 0;
-		game->so.endian = 0;
-	}
 	if (!game->so.img || !game->so_tex)
 		return (-1);
-	game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
+	game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bpp, &game->so.line_length, &game->so.endian);
 	if (game->we_tex)
-	{
 		game->we.img = mlx_xpm_file_to_image(game->mlx, game->we_tex, &game->we.w, &game->we.h);
-		game->we.line_length = 0;
-		game->we.bits_per_pixel = 0;
-		game->we.endian = 0;
-	}
 	if (!game->we.img || !game->we_tex)
 		return (-1);
-	game->we.addr = mlx_get_data_addr(game->we.img, &game->we.bits_per_pixel, &game->we.line_length, &game->we.endian);
+	game->we.addr = mlx_get_data_addr(game->we.img, &game->we.bpp, &game->we.line_length, &game->we.endian);
 	if (game->ea_tex)
-	{
 		game->ea.img = mlx_xpm_file_to_image(game->mlx, game->ea_tex, &game->ea.w, &game->ea.h);
-		game->ea.line_length = 0;
-		game->ea.bits_per_pixel = 0;
-		game->ea.endian = 0;
-	}
 	if (!game->ea.img || !game->ea_tex)
 		return (-1);
-	game->ea.addr = mlx_get_data_addr(game->ea.img, &game->ea.bits_per_pixel, &game->ea.line_length, &game->ea.endian);
+	game->ea.addr = mlx_get_data_addr(game->ea.img, &game->ea.bpp, &game->ea.line_length, &game->ea.endian);
 	return (0);
 }
 
@@ -202,7 +184,8 @@ int	ft_file_split(t_game *game)
 	}
 	game->col_f = ft_find_str_matrix2("F ", game->file);
 	game->col_c = ft_find_str_matrix2("C ", game->file);
-	if (!game->col_f || !game->col_c || (ft_get_color_c(game) == -1) || (ft_get_color_f(game) == -1))
+	if (!game->col_f || !game->col_c \
+	|| (ft_get_color_c(game) == -1) || (ft_get_color_f(game) == -1))
 	{
 		printf("\nError with colors\n");
 		return (-1);
@@ -237,7 +220,7 @@ void	ft_move_up(t_game *game)
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -255,7 +238,7 @@ void	ft_move_down(t_game *game)
 		game->m.pos_y = prueba_y;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -273,7 +256,7 @@ void	ft_move_left(t_game *game)
 		game->m.pos_y = prueba_y;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -295,7 +278,7 @@ void	ft_move_right(t_game *game)
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 	ft_draw(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
@@ -306,7 +289,8 @@ int	key_event(int key_code, t_game *game)
 	double	old_dir_x;
 
 	if (key_code == 53)
-		exit(0);
+		//exit(0);
+	ft_close(game);
 	else if (key_code == 0x0D)
 		ft_move_up(game);
 	else if (key_code == 0x01)
@@ -325,7 +309,7 @@ int	key_event(int key_code, t_game *game)
 		game->m.plane_y = old_plane_x * sin(-game->m.rot_speed) + game->m.plane_y * cos(-game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 		ft_draw(game);
 		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 	}
@@ -339,7 +323,7 @@ int	key_event(int key_code, t_game *game)
 		game->m.plane_y = old_plane_x * sin(game->m.rot_speed) + game->m.plane_y * cos(game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
+		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
 		ft_draw(game);
 		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 	}
@@ -350,7 +334,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = data->addr + (y * data->line_length + x * (data->bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -360,7 +344,7 @@ unsigned int	get_mlx_pixel_color(t_img *tex, int x, int y)
 	int				offset;
 	unsigned int	color;
 
-	offset = (y * tex->line_length + x * (tex->bits_per_pixel / 8));
+	offset = (y * tex->line_length + x * (tex->bpp / 8));
 	dst = tex->addr + offset;
 	color = *(unsigned int *)dst;
 	return (color);
@@ -617,7 +601,7 @@ int	main(int argc, char **argv)
 	fill_new_map(&game);
 	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");
 	game.m.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
-	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bits_per_pixel, &game.m.line_length, &game.m.endian);
+	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bpp, &game.m.line_length, &game.m.endian);
 	ft_draw(&game);
 	mlx_put_image_to_window(game.mlx, game.win, game.m.img, 0, 0);
 	mlx_hook(game.win, 2, 0, &key_event, &game);

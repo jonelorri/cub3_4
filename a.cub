@@ -3,10 +3,10 @@ F 84,217,225
 C 93,220,121
 
 
-NO ./txoinas.xpm
-SO ./42_textura_marmol.xpm
-WE ./42_textura_jelorria.xpm
-EA ./42_textura_ibaines.xpm
+NO ./jokin.xpm
+SO ./jokin2.xpm
+WE ./jokin3.xpm
+EA ./jokin4.xpm
 
 
 1111111111

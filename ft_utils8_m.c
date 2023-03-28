@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_m.c                                       :+:      :+:    :+:   */
+/*   ft_utils8_m.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/09 17:17:10 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/28 18:32:07 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ char	**ft_get_map(t_game *game)
 	i = 0;
 	size = 0;
 	check = 0;
-	while (game->file_save[i] && game->file_save[i][0] && game->file_save[i][0] != '1')
+	while (game->file_save[i] && game->file_save[i][0] \
+		&& game->file_save[i][0] != '1')
 		i++;
 	j = i;
 	while (game->file_save[i])

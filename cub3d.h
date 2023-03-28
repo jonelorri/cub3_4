@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/28 18:31:27 by ibaines           #+#    #+#             */
+/*   Updated: 2023/03/28 19:03:00 by ibaines          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -14,7 +26,7 @@ typedef struct s_data
 	void	*mlx;
 	void	*mlx_win;
 	char	*addr;
-	int		bits_per_pixel;
+	int		bpp;
 	int		endian;
 	int		line_length;
 	void	*img;
@@ -53,7 +65,7 @@ typedef struct s_img
 {
 	void	*img;
 	char	*addr;
-	int		bits_per_pixel;
+	int		bpp;
 	int		line_length;
 	int		endian;
 	int		w;

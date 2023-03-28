@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils_m.c                                       :+:      :+:    :+:   */
+/*   ft_utils4_m.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/09 17:17:10 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/28 20:01:48 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ int	first2_map_check(char **map, int mh, int x, int y)
 int	ft_close(t_game *g)
 {
 	mlx_destroy_window(g->mlx, g->win);
+	//free_matrix(g->map);
+	//free(g);
+	//system("leaks 98662");
 	exit(0);
 }
 
