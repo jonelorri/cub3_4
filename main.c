@@ -1,412 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils_m.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
+/*   Updated: 2023/03/09 17:17:10 by ibaines          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
-#include <string.h>
-#include <fcntl.h>
-#include <stdio.h>
 
 #define SCREENWIDTH 640
 #define SCREENHEIGHT 480
 
-int	ft_close(t_game *g)
-{
-	mlx_destroy_window(g->mlx, g->win);
-	exit(0);
-}
-
-void	ft_write_hex_c(size_t a, int w, t_game *game)
-{
-	char			*hex;
-	char			*hex2;
-	char			*start;
-
-	hex = "0123456789ABCDEF";
-	hex2 = ft_strdup(hex);
-	hex2[0] = hex[a];
-	hex2[1] = '\0';
-	if (ft_strlen(hex2) < 2 && w == 1)
-		hex2 = ft_strjoin("0", hex2);
-	start = NULL;
-	if (game->c_col.init == 0)
-	{
-		game->c_col.init++;
-		hex2[0] = hex[a];
-		hex2[1] = '\0';
-		game->c_col.col = ft_strjoin("0x", hex2);
-	}
-	else
-	{
-		game->c_col.col = ft_strjoin(game->c_col.col, hex2);
-	}
-}
-
-void	ft_hex_c(size_t nb, int a, t_game *game)
-{
-	if (nb >= 0 && nb < 16)
-		ft_write_hex_c(nb % 16, a, game);
-	if (nb >= 16)
-	{
-		ft_hex_c(nb / 16, a, game);
-		ft_write_hex_c(nb % 16, a, game);
-	}
-}
-
-void	ft_color_hex_c(t_game *game)
-{
-	game->c_col.init = 0;
-	if (game->c_col.r < 16)
-		ft_hex_c(game->c_col.r, 1, game);
-	else
-		ft_hex_c(game->c_col.r, 0, game);
-	if (game->f_col.g < 16)
-		ft_hex_c(game->c_col.g, 1, game);
-	else
-		ft_hex_c(game->c_col.g, 0, game);
-	if (game->c_col.b < 16)
-		ft_hex_c(game->c_col.b, 1, game);
-	else
-		ft_hex_c(game->c_col.b, 0, game);
-}
-
-void	ft_write_hex_f(size_t a, int w, t_game *game)
-{
-	char	*hex;
-	char	*hex2;
-	char	*start;
-
-	hex = "0123456789ABCDEF";
-	hex2 = ft_strdup(hex);
-	hex2[0] = hex[a];
-	hex2[1] = '\0';
-	if (ft_strlen(hex2) < 2 && w == 1)
-		hex2 = ft_strjoin("0", hex2);
-	start = NULL;
-	if (game->f_col.init == 0)
-	{
-		game->f_col.init++;
-		game->f_col.col = ft_strjoin("0x", hex2);
-	}
-	else
-	{
-		game->f_col.col = ft_strjoin(game->f_col.col, hex2);
-	}
-}
-
-void	ft_hex_f(size_t nb, int a, t_game *game)
-{
-	if (nb >= 0 && nb < 16)
-		ft_write_hex_f(nb % 16, a, game);
-	if (nb >= 16)
-	{
-		ft_hex_f(nb / 16, a, game);
-		ft_write_hex_f(nb % 16, a, game);
-	}
-}
-
-void	ft_color_hex(t_game *game)
-{
-	game->f_col.init = 0;
-	if (game->f_col.r < 16)
-		ft_hex_f(game->f_col.r, 1, game);
-	else 
-		ft_hex_f(game->f_col.r, 0, game);
-	if (game->f_col.g < 16)
-		ft_hex_f(game->f_col.g, 1, game); 
-	else 
-		ft_hex_f(game->f_col.g, 0, game);
-	if (game->f_col.b < 16)
-		ft_hex_f(game->f_col.b, 1, game);
-	else 
-		ft_hex_f(game->f_col.b, 0, game);
-}
-
-int	ft_strlen_space(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != ' ')
-		i++;
-	return (i);
-}
-
-void	t_map_trim(char **str)
-{
-	int		i;
-	char	*ptr;
-
-	i = 0;
-	while (str[i])
-	{
-		ptr = ft_strtrim(str[i], " ");
-		free (str[i]);
-		str[i] = ptr;
-		i++;
-	}
-}
-
-int	ft_str_isdigit(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	ft_matrix_len(char **str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
-char	*ft_check_format(char *str, char *to_find)
-{
-	int	a;
-	int	b;
-
-	b = 0;
-	a = 0;
-	if (ft_strlen(to_find) == 0)
-		return (str);
-	while (str[a])
-	{
-		if (str[a + b] == to_find[b])
-		{
-			while (to_find[b])
-			{
-				b++;
-				if (str[a + b] != to_find[b])
-					break ;
-			}
-			if (b == (int)ft_strlen(to_find))
-				return (str + a);
-			b = 0;
-		}
-		a++;
-	}
-	printf("Error\nInvalid file, use *.cub\n");
-	return (0);
-}
-
-char	*ft_strstr(char *str, char *to_find)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	if (to_find[0] == '\0')
-		return (str);
-	while (str[i] != '\0')
-	{
-		j = 0;
-		while (str[i + j] != '\0' && str[i + j] == to_find[j])
-		{
-			if (to_find[j + 1] == '\0')
-				return (&str[i]);
-			++j;
-		}
-		++i;
-	}
-	return (0);
-}
-
-char	*ft_find_str_matrix(char *str, char **mat)
-{
-	int	i;
-
-	i = 0;
-	while (mat[i])
-	{
-		if (ft_strstr(mat[i], str))
-			return(ft_strstr(mat[i], str));
-		i++;
-	}
-	return (NULL);
-}
-
-char	*ft_find_str_matrix2(char *str, char **mat)
-{
-	int	i;
-	int	j;
-	int	lenstr;
-
-	i = 0;
-	j = 0;
-	lenstr = (int)ft_strlen(str);
-	while (mat[i])
-	{
-		if (mat[i][j] == str[j])
-		{
-			j++;
-			if (j == lenstr)
-				return(mat[i] + j);
-		}
-		else
-			j = 0;
-		if (!j)
-		i++;
-	}
-	return (NULL);
-}
-
-void	ft_count_lines(t_game *g, int i, int fd)
-{
-	char	*ptr;
-
-	ptr = "AA";
-	while (1)
-	{	
-		if (ptr == NULL)
-			break ;
-		ptr = get_next_line(fd);
-		free(ptr);
-		i++;
-	}
-	i--;
-	g->mh = i;
-}
-void	ft_fill_map(t_game *g, int i, int fd)
-{
-	char	*ptr;
-
-	ptr = "AA";
-	while (1)
-	{
-		ptr = get_next_line(fd);
-		if (ptr == NULL || i == g->mh)
-			break ;
-		g->mw = (int)ft_strlen(ptr);
-		g->file[i] = ptr;
-		i++;
-	}
-}
-
-int	ft_read_file(t_game *g, char *name)
-{
-	int		fd;
-	int		i;
-
-	i = 0;
-	g->no_check = 0;
-	g->so_check = 0;
-	g->ea_check = 0;
-	g->we_check = 0;
-	g->c_check = 0;
-	g->f_check = 0;
-	if (!ft_check_format(name, ".cub"))
-		return (0);
-	fd = open(name, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error\nWrong fd.\n");
-		return (0);
-	}
-	else
-	{
-		ft_count_lines(g, i, fd);
-		close (fd);
-		fd = open(name, O_RDONLY);
-		g->file = (char **)malloc(sizeof(char *) * (g->mh + 1));
-		if (!g->file)
-			return (0);
-		g->file[g->mh] = NULL;
-		ft_fill_map(g, i, fd);
-	}
-	close (fd);
-	return (1);
-}
-
-void	ft_remove_end_line(t_game *game)
-{
-	int		i;
-	int		j;
-	size_t	size;
-	char	*ptr;
-
-	i = 0;
-	j = 0;
-	while (i < game->mh)
-	{
-		size = ft_strlen(game->file[i]);
-		if (size > 1)
-		{
-			ptr = malloc(size);
-			ft_strncpy(ptr, game->file[i], size - 1);
-			ptr[size - 1] = '\0';
-			free(game->file[i]);
-			game->file[i] = ptr;
-		}
-		i++;
-	}
-	
-}
-
-char	**ft_get_map(t_game *game)
-{
-	char	**map;
-	int		i;
-	int		j;
-	int		size;
-	int		check;
-
-	i = 0;
-	size = 0;
-	check = 0;
-	while (game->file_save[i] && game->file_save[i][0] && game->file_save[i][0] != '1')
-		i++;
-	j = i;
-	while (game->file_save[i])
-	{
-		if (ft_strstr(game->file_save[i], "1"))
-			check = 1;
-		size++;
-		i++;
-	}
-	if (!check)
-	{
-		printf("Error, invalid map\n");
-		return(NULL);
-	}
-	map = (char **)malloc(sizeof(char *) * (size + 1));
-	i = j;
-	size = 0;
-	while (game->file[i])
-	{
-		map[size] = ft_strdup(game->file[i]);
-		size++;
-		i++;
-	}
-	map[size] = NULL;
-	return (map);
-}
-
-void	ft_file_copy(t_game	*game)
-{
-	int	i;
-
-	i = 0;
-	game->file_save = (char **)malloc(sizeof(char *) * (game->mh + 1));
-	if (!game->file)
-		return ;
-	while(game->file[i])
-	{
-		game->file_save[i] = ft_strdup(game->file[i]);
-		i++;
-	}
-	game->file_save[i] = NULL;
-}
-
-int	ft_get_map2(t_game *game) //comprobar que no hay mas lineas despues del mapa
+int	ft_get_map2(t_game *game)
 {
 	int	i;
 
@@ -484,7 +93,7 @@ int	ft_check_tex(t_game *game)
 	}
 	if (!game->so.img || !game->so_tex)
 		return (-1);
-		game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
+	game->so.addr = mlx_get_data_addr(game->so.img, &game->so.bits_per_pixel, &game->so.line_length, &game->so.endian);
 	if (game->we_tex)
 	{
 		game->we.img = mlx_xpm_file_to_image(game->mlx, game->we_tex, &game->we.w, &game->we.h);
@@ -517,7 +126,7 @@ int	ft_check_color_com(char *str)
 	{
 		if (str[i] == ',' && (int)ft_strlen(str) > i)
 			if (str[i + 1] < '0' || str[i + 1] > '9')
-			return (1);
+				return (1);
 		i++;
 	}
 	return (0);
@@ -528,7 +137,7 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int ft_get_color_f(t_game *game)
+int	ft_get_color_f(t_game *game)
 {
 	char	**col_mat;
 
@@ -559,7 +168,7 @@ int	ft_get_color_c(t_game *game)
 
 	if (ft_check_color_com(game->col_c))
 		return (-1);
-	col_mat = ft_split(game->col_c , ',');
+	col_mat = ft_split(game->col_c, ',');
 	if (!col_mat || ft_matrix_len(col_mat) != 3)
 		return (-1);
 	if (!ft_str_isdigit(col_mat[0]) || !ft_str_isdigit(col_mat[1]) || !ft_str_isdigit(col_mat[2]))
@@ -580,13 +189,8 @@ int	ft_get_color_c(t_game *game)
 	return (0);
 }
 
-
-
 int	ft_file_split(t_game *game)
 {
-	int	i;
-
-	i = 0;
 	game->no_tex = ft_find_str_matrix2("NO ", game->file);
 	game->so_tex = ft_find_str_matrix2("SO ", game->file);
 	game->we_tex = ft_find_str_matrix2("WE ", game->file);
@@ -598,7 +202,7 @@ int	ft_file_split(t_game *game)
 	}
 	game->col_f = ft_find_str_matrix2("F ", game->file);
 	game->col_c = ft_find_str_matrix2("C ", game->file);
-	if (!game->col_f || !game->col_c ||(ft_get_color_c(game) == -1) || (ft_get_color_f(game) == -1))
+	if (!game->col_f || !game->col_c || (ft_get_color_c(game) == -1) || (ft_get_color_f(game) == -1))
 	{
 		printf("\nError with colors\n");
 		return (-1);
@@ -607,7 +211,7 @@ int	ft_file_split(t_game *game)
 	ft_color_hex_c(game);
 	if (ft_get_map2(game))
 		return (-1);
-	game->map = ft_get_map(game);//
+	game->map = ft_get_map(game);
 	if (!game->map)
 		return (-1);
 	if (ft_get_map3(game))
@@ -616,21 +220,20 @@ int	ft_file_split(t_game *game)
 	return (0);
 }
 
-void	ft_move_up(t_game *game, int key)
+void	ft_move_up(t_game *game)
 {
-	double	pruebaX;
-	double	pruebaY;
+	double	prueba_x;
+	double	prueba_y;
 
-	key = 0;
-	pruebaX = game->m.pos_x + game->m.dir_x * game->m.move_speed;
-	pruebaY = game->m.pos_y + game->m.dir_y * game->m.move_speed;
-	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
+	prueba_x = game->m.pos_x + game->m.dir_x * game->m.move_speed;
+	prueba_y = game->m.pos_y + game->m.dir_y * game->m.move_speed;
+	if (game->map[(int)game->m.pos_y][(int)(prueba_x)] != '1')
 	{
-		game->m.pos_x = pruebaX;
+		game->m.pos_x = prueba_x;
 	}
-	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
+	if (game->map[(int)(prueba_y)][(int)(game->m.pos_x)] != '1')
 	{
-		game->m.pos_y = pruebaY;
+		game->m.pos_y = prueba_y;
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
@@ -639,18 +242,17 @@ void	ft_move_up(t_game *game, int key)
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
 
-void	ft_move_down(t_game *game, int key)
+void	ft_move_down(t_game *game)
 {
-	double	pruebaX;
-	double	pruebaY;
+	double	prueba_x;
+	double	prueba_y;
 
-	pruebaX = game->m.pos_x - game->m.dir_x * game->m.move_speed;
-	pruebaY = game->m.pos_y - game->m.dir_y * game->m.move_speed;
-	key = 0;
-	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
-		game->m.pos_x = pruebaX;
-	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
-		game->m.pos_y = pruebaY;
+	prueba_x = game->m.pos_x - game->m.dir_x * game->m.move_speed;
+	prueba_y = game->m.pos_y - game->m.dir_y * game->m.move_speed;
+	if (game->map[(int)game->m.pos_y][(int)(prueba_x)] != '1')
+		game->m.pos_x = prueba_x;
+	if (game->map[(int)(prueba_y)][(int)(game->m.pos_x)] != '1')
+		game->m.pos_y = prueba_y;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
@@ -658,18 +260,17 @@ void	ft_move_down(t_game *game, int key)
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
 
-void	ft_move_left(t_game *game, int key)
+void	ft_move_left(t_game *game)
 {
-	double	pruebaX;
-	double	pruebaY;
+	double	prueba_x;
+	double	prueba_y;
 
-	key = 0;
-	pruebaX = game->m.pos_x + ( game->m.dir_y) * game->m.move_speed;
-	pruebaY = game->m.pos_y -  game->m.dir_x * game->m.move_speed;
-	if (game->map[(int)game->m.pos_y][(int)(pruebaX)] != '1')
-		game->m.pos_x = pruebaX;
-	if (game->map[(int)(pruebaY)][(int)(game->m.pos_x)] != '1')
-		game->m.pos_y = pruebaY;
+	prueba_x = game->m.pos_x + (game->m.dir_y) * game->m.move_speed;
+	prueba_y = game->m.pos_y - game->m.dir_x * game->m.move_speed;
+	if (game->map[(int)game->m.pos_y][(int)(prueba_x)] != '1')
+		game->m.pos_x = prueba_x;
+	if (game->map[(int)(prueba_y)][(int)(game->m.pos_x)] != '1')
+		game->m.pos_y = prueba_y;
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 	game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
@@ -677,21 +278,20 @@ void	ft_move_left(t_game *game, int key)
 	mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
 }
 
-void	ft_move_right(t_game *game, int key)
+void	ft_move_right(t_game *game)
 {
-	double	pruebaX;
-	double	pruebaY;
+	double	prueba_x;
+	double	prueba_y;
 
-	key = 0;
-	pruebaX = game->m.pos_x - ( game->m.dir_y) * game->m.move_speed;
-	pruebaY = game->m.pos_y + game->m.dir_x * game->m.move_speed;
-	if (game->map[(int)(pruebaY)][(int)game->m.pos_x] != '1')
+	prueba_x = game->m.pos_x - (game->m.dir_y) * game->m.move_speed;
+	prueba_y = game->m.pos_y + game->m.dir_x * game->m.move_speed;
+	if (game->map[(int)(prueba_y)][(int)game->m.pos_x] != '1')
 	{
-		game->m.pos_y = pruebaY;
+		game->m.pos_y = prueba_y;
 	}
-	if (game->map[(int)(game->m.pos_y)][(int)(pruebaX)] != '1')
+	if (game->map[(int)(game->m.pos_y)][(int)(prueba_x)] != '1')
 	{
-		game->m.pos_x = pruebaX;
+		game->m.pos_x = prueba_x;
 	}
 	mlx_destroy_image(game->mlx, game->m.img);
 	game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
@@ -702,27 +302,27 @@ void	ft_move_right(t_game *game, int key)
 
 int	key_event(int key_code, t_game *game)
 {
-	double	oldPlaneX;
-	double	oldDirX;
+	double	old_plane_x;
+	double	old_dir_x;
 
 	if (key_code == 53)
 		exit(0);
 	else if (key_code == 0x0D)
-		ft_move_up(game, key_code);
+		ft_move_up(game);
 	else if (key_code == 0x01)
-		ft_move_down(game, key_code);
-	 if (key_code == 2)
-		ft_move_right(game, key_code);
-	 if (key_code == 0)
-		ft_move_left(game, key_code);
+		ft_move_down(game);
+	if (key_code == 2)
+		ft_move_right(game);
+	if (key_code == 0)
+		ft_move_left(game);
 	if (key_code == 124)
 	{
-		oldDirX = game->m.dir_x;
+		old_dir_x = game->m.dir_x;
 		game->m.dir_x = game->m.dir_x * cos(-game->m.rot_speed) - game->m.dir_y * sin(-game->m.rot_speed);
-		game->m.dir_y = oldDirX * sin(-game->m.rot_speed) + game->m.dir_y * cos(-game->m.rot_speed);
-		oldPlaneX = game->m.plane_x;
+		game->m.dir_y = old_dir_x * sin(-game->m.rot_speed) + game->m.dir_y * cos(-game->m.rot_speed);
+		old_plane_x = game->m.plane_x;
 		game->m.plane_x = game->m.plane_x * cos(-game->m.rot_speed) - game->m.plane_y * sin(-game->m.rot_speed);
-		game->m.plane_y = oldPlaneX * sin(-game->m.rot_speed) + game->m.plane_y * cos(-game->m.rot_speed);
+		game->m.plane_y = old_plane_x * sin(-game->m.rot_speed) + game->m.plane_y * cos(-game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
@@ -731,12 +331,12 @@ int	key_event(int key_code, t_game *game)
 	}
 	else if (key_code == 123)
 	{
-		oldDirX = game->m.dir_x;
+		old_dir_x = game->m.dir_x;
 		game->m.dir_x = game->m.dir_x * cos(game->m.rot_speed) - game->m.dir_y * sin(game->m.rot_speed);
-		game->m.dir_y = oldDirX * sin(game->m.rot_speed) + game->m.dir_y * cos(game->m.rot_speed);
-		oldPlaneX = game->m.plane_x;
+		game->m.dir_y = old_dir_x * sin(game->m.rot_speed) + game->m.dir_y * cos(game->m.rot_speed);
+		old_plane_x = game->m.plane_x;
 		game->m.plane_x = game->m.plane_x * cos(game->m.rot_speed) - game->m.plane_y * sin(game->m.rot_speed);
-		game->m.plane_y = oldPlaneX * sin(game->m.rot_speed) + game->m.plane_y * cos(game->m.rot_speed);
+		game->m.plane_y = old_plane_x * sin(game->m.rot_speed) + game->m.plane_y * cos(game->m.rot_speed);
 		mlx_destroy_image(game->mlx, game->m.img);
 		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
 		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bits_per_pixel, &game->m.line_length, &game->m.endian);
@@ -768,7 +368,7 @@ unsigned int	get_mlx_pixel_color(t_img *tex, int x, int y)
 
 static void	draw_column(t_game *game, int x, int y, t_img *tex)
 {
-	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(tex, game->texX, game->texY));
+	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(tex, game->tex_x, game->tex_y));
 }
 
 void	ver_line(t_data *m, int x, t_game *game)
@@ -783,8 +383,8 @@ void	ver_line(t_data *m, int x, t_game *game)
 	}
 	while (i < SCREENHEIGHT)
 	{
-		game->texY = (int)game->texPos & (game->texHeight - 1);
-		game->texPos += game->step;
+		game->tex_y = (int)game->tex_pos & (game->tex_height - 1);
+		game->tex_pos += game->step;
 		if (game->m.color == 1)
 			draw_column(game, x, i, &game->no);
 		if (game->m.color == 2)
@@ -830,8 +430,8 @@ void	init_variables(t_data *m, t_game *game)
 	a = ft_find_pj(game);
 	m->pos_x = game->p.x + 0.5;
 	m->pos_y = game->p.y + 0.5;
-	game->texHeight = 64;
-	game->texWidth = 64;
+	game->tex_height = 64;
+	game->tex_width = 64;
 	if (a == 'E')
 	{
 		m->dir_x = 1;
@@ -874,20 +474,20 @@ void	ft_draw(t_game *game)
 	while (x < SCREENWIDTH)
 	{
 		game->m.camera_x = 2 * x / (double)SCREENWIDTH - 1;
-		game->m.rayDir_x = game->m.dir_x + game->m.plane_x * game->m.camera_x;
-		game->m.rayDir_y = game->m.dir_y + game->m.plane_y * game->m.camera_x;
+		game->m.ray_dir_x = game->m.dir_x + game->m.plane_x * game->m.camera_x;
+		game->m.ray_dir_y = game->m.dir_y + game->m.plane_y * game->m.camera_x;
 		game->m.map_x = (int)game->m.pos_x;
 		game->m.map_y = (int)game->m.pos_y;
-		if (game->m.rayDir_x == 0)
+		if (game->m.ray_dir_x == 0)
 			game->m.delta_dist_x = exp(30);
 		else
-			game->m.delta_dist_x = fabs(1.0 / game->m.rayDir_x);
-		if (game->m.rayDir_y == 0)
+			game->m.delta_dist_x = fabs(1.0 / game->m.ray_dir_x);
+		if (game->m.ray_dir_y == 0)
 			game->m.delta_dist_y = exp(30);
 		else
-			game->m.delta_dist_y = fabs(1.0 / game->m.rayDir_y);
+			game->m.delta_dist_y = fabs(1.0 / game->m.ray_dir_y);
 		game->m.hit = 0;
-		if (game->m.rayDir_x < 0)
+		if (game->m.ray_dir_x < 0)
 		{
 			game->m.step_x = -1;
 			game->m.side_dist_x = (game->m.pos_x - game->m.map_x) * game->m.delta_dist_x;
@@ -897,7 +497,7 @@ void	ft_draw(t_game *game)
 			game->m.step_x = 1;
 			game->m.side_dist_x = (game->m.map_x + 1.0 - game->m.pos_x) * game->m.delta_dist_x;
 		}
-		if (game->m.rayDir_y < 0)
+		if (game->m.ray_dir_y < 0)
 		{
 			game->m.step_y = -1;
 			game->m.side_dist_y = (game->m.pos_y - game->m.map_y) * game->m.delta_dist_y;
@@ -926,7 +526,7 @@ void	ft_draw(t_game *game)
 		}
 		if (game->m.side == 0)
 		{
-			if (game->m.rayDir_x > 0)
+			if (game->m.ray_dir_x > 0)
 				game->m.color = 1;
 			else
 				game->m.color = 2;
@@ -935,7 +535,7 @@ void	ft_draw(t_game *game)
 		else
 		{
 			game->m.perp_wall_dist = (game->m.side_dist_y - game->m.delta_dist_y);
-			if (game->m.rayDir_y > 0)
+			if (game->m.ray_dir_y > 0)
 				game->m.color = 3;
 			else
 				game->m.color = 4;
@@ -948,17 +548,17 @@ void	ft_draw(t_game *game)
 		if (game->m.draw_end >= SCREENHEIGHT)
 			game->m.draw_end = SCREENHEIGHT - 1;
 		if (game->m.side == 0)
-			game->wallx = game->m.pos_y + game->m.perp_wall_dist * game->m.rayDir_y;
+			game->wallx = game->m.pos_y + game->m.perp_wall_dist * game->m.ray_dir_y;
 		else
-			game->wallx = game->m.pos_x + game->m.perp_wall_dist * game->m.rayDir_x;
+			game->wallx = game->m.pos_x + game->m.perp_wall_dist * game->m.ray_dir_x;
 		game->wallx -= floor(game->wallx);
-		game->texX = (int)(game->wallx * (double)game->texWidth);
-		if (game->m.side == 0 && game->m.rayDir_x > 0)
-			game->texX = game->texWidth - game->texX - 1;
-		if (game->m.side == 1 && game->m.rayDir_y < 0)
-			game->texX = game->texWidth - game->texX - 1;
-		game->step = 1.0 * game->texHeight / game->m.line_h;
-		game->texPos = (game->m.draw_start - SCREENHEIGHT / 2 + game->m.line_h / 2) * game->step;
+		game->tex_x = (int)(game->wallx * (double)game->tex_width);
+		if (game->m.side == 0 && game->m.ray_dir_x > 0)
+			game->tex_x = game->tex_width - game->tex_x - 1;
+		if (game->m.side == 1 && game->m.ray_dir_y < 0)
+			game->tex_x = game->tex_width - game->tex_x - 1;
+		game->step = 1.0 * game->tex_height / game->m.line_h;
+		game->tex_pos = (game->m.draw_start - SCREENHEIGHT / 2 + game->m.line_h / 2) * game->step;
 		ver_line(&game->m, x, game);
 		x ++;
 	}
@@ -975,19 +575,19 @@ void	fill_new_map(t_game *game)
 	j = 0;
 	while (game->map[j])
 		j ++;
-	game->newMap = (int **)malloc(sizeof(int *) * j);
+	game->new_map = (int **)malloc(sizeof(int *) * j);
 	while (w < j)
 	{
 		while (game->map[w][i])
 			i ++;
-		game->newMap[w] = (int *)malloc(sizeof(int) * i);
+		game->new_map[w] = (int *)malloc(sizeof(int) * i);
 		i = 0;
 		while (game->map[w][i])
 		{
 			if (game->map[w][i] == '1')
-				game->newMap[w][i] = 1;
+				game->new_map[w][i] = 1;
 			else
-				game->newMap[w][i] = 0;
+				game->new_map[w][i] = 0;
 			i ++;
 		}
 		i = 0;
@@ -997,7 +597,6 @@ void	fill_new_map(t_game *game)
 
 int	main(int argc, char **argv)
 {
-	int		x;
 	t_game	game;
 	int		i;
 
@@ -1008,7 +607,6 @@ int	main(int argc, char **argv)
 		return (0);
 	while (i < game.mh)
 		i++;
-	x = 0;
 	game.mlx = mlx_init();
 	ft_remove_end_line(&game);
 	if (ft_file_split(&game) == -1)

@@ -12,88 +12,93 @@
 
 #include "cub3d.h"
 
-int	ft_malloc_dim(char **str)
+int	ft_str_isdigit(char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
 		i++;
+	}
+	return (1);
+}
+
+int	ft_matrix_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
 	return (i);
 }
 
-int	ft_close_map_mid_check(char **map, int mh, int size)
+char	*ft_check_format(char *str, char *to_find)
+{
+	int	a;
+	int	b;
+
+	b = 0;
+	a = 0;
+	if (ft_strlen(to_find) == 0)
+		return (str);
+	while (str[a])
+	{
+		if (str[a + b] == to_find[b])
+		{
+			while (to_find[b])
+			{
+				b++;
+				if (str[a + b] != to_find[b])
+					break ;
+			}
+			if (b == (int)ft_strlen(to_find))
+				return (str + a);
+			b = 0;
+		}
+		a++;
+	}
+	printf("Error\nInvalid file, use *.cub\n");
+	return (0);
+}
+
+char	*ft_strstr(char *str, char *to_find)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	j = 0;
-	while (map[j] && j < mh)
+	if (to_find[0] == '\0')
+		return (str);
+	while (str[i] != '\0')
 	{
-		while (map[j][i])
+		j = 0;
+		while (str[i + j] != '\0' && str[i + j] == to_find[j])
 		{
-			if ((map[j][0] != '1') || (map[j][size - 2] != '1'))
-			{
-				printf("Error\nEl mapa no está cerrado\n");
-				return (1);
-			}
-			if (map[j][i])
-				i++;
+			if (to_find[j + 1] == '\0')
+				return (&str[i]);
+			++j;
 		}
-		i = 0;
-		j++;
+		++i;
 	}
 	return (0);
 }
 
-int	ft_close_map_top_check(char **map, int size)
+char	*ft_find_str_matrix(char *str, char **mat)
 {
 	int	i;
 
 	i = 0;
-	while (map[0][i] && i < size - 1)
+	while (mat[i])
 	{
-		if (map[0][i] != '1' && map[0][i] != ' ')
-		{
-			printf("Error\nEl mapa no está cerrado\n");
-			return (1);
-		}
+		if (ft_strstr(mat[i], str))
+			return (ft_strstr(mat[i], str));
 		i++;
 	}
-	return (0);
-}
-
-int	ft_close_map_bot_check(char **map, int mh, int size)
-{
-	int	i;
-
-	i = 0;
-	while (map[mh - 1][i] && i < size - 1)
-	{
-		if (map[mh - 1][i] != '1' && map[mh - 1][i] != ' ')
-		{
-			printf("Error\nEl mapa no está cerrado\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	ft_close_map_ext(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != '1' && str[i] != ' ' && str[i] != '\n' && str[i] != '\0')
-		{
-			printf("Error\nEl mapa no está cerrado\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
+	return (NULL);
 }

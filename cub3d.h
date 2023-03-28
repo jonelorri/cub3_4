@@ -1,13 +1,15 @@
-#ifndef LIB_H
-# define LIB_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include <stdio.h>
 # include <stdlib.h>
 # include "mlx/mlx.h"
 # include <math.h>
-#include "libft/libft.h"
+# include "libft/libft.h"
+# include <string.h>
+# include <fcntl.h>
 
-typedef struct	s_data
+typedef struct s_data
 {
 	void	*mlx;
 	void	*mlx_win;
@@ -26,8 +28,8 @@ typedef struct	s_data
 	double	time;
 	double	old_time;
 	double	camera_x;
-	double	rayDir_x;
-	double	rayDir_y;
+	double	ray_dir_x;
+	double	ray_dir_y;
 	int		map_x;
 	int		map_y;
 	double	side_dist_x;
@@ -68,14 +70,13 @@ typedef struct s_color
 	char	*col;
 }	t_color;
 
-
 typedef struct s_player
 {
 	float	x;
 	float	y;
 	int		c;
-    char	pos;
-    int		check;
+	char	pos;
+	int		check;
 	t_img	up;
 	t_img	down;
 	t_img	left;
@@ -92,19 +93,19 @@ typedef struct s_game
 	void		*win;
 	int			u;
 	int			ene;
-    t_player	p;
+	t_player	p;
 	int			mw;
 	int			mh;
 	char		*col_f;
 	char		*col_c;
 	char		**map;
-	int			**newMap;
-	int			texNum;
-	int			texX;
-	int			texY;
-	int			texWidth;
-	int			texHeight;
-	double		texPos;
+	int			**new_map;
+	int			tex_num;
+	int			tex_x;
+	int			tex_y;
+	int			tex_width;
+	int			tex_height;
+	double		tex_pos;
 	double		step;
 	char		**file;
 	double		wallx;
@@ -129,18 +130,41 @@ typedef struct s_game
 }				t_game;
 
 void	ft_draw(t_game *game);
-int     ft_map_check(t_game *g);
+int		ft_map_check(t_game *g);
 void	free_matrix(char **str);
-int     ft_map_exit_check(t_game *g);
-void	ft_map_c(char *s, t_game *g, int *c, int *e);
+int		ft_map_exit_check(t_game *g);
 void	ft_map_p(char *s, t_game *g, int *p, int j);
-int     ft_str_len_check(char **map, int mh);
-int     ft_close_map_mid_check(char **map, int mh, int size);
-int     ft_close_map_top_check(char **map, int size);
-int 	ft_close_map_bot_check(char **map, int mh, int size);
-int	    ft_close_map_check(char **map, int mh);
-int	    ft_check_charac(t_game *g, int size);
+int		ft_str_len_check(char **map, int mh);
+int		ft_close_map_mid_check(char **map, int mh, int size);
+int		ft_close_map_top_check(char **map, int size);
+int		ft_close_map_bot_check(char **map, int mh, int size);
+int		ft_close_map_check(char **map, int mh);
+int		ft_check_charac(t_game *g);
 int		ft_controlls(int keykode, t_game *g);
 int		ft_close(t_game *g);
+int		ft_malloc_dim(char **str);
+int		ft_close_map_ext(char *str);
+int		first2_map_check(char **map, int mh, int x, int y);
+void	ft_color_hex_c(t_game *game);
+void	ft_hex_c(size_t nb, int a, t_game *game);
+void	ft_write_hex_c(size_t a, int w, t_game *game);
+int		ft_close(t_game *g);
+void	t_map_trim(char **str);
+int		ft_strlen_space(char *str);
+void	ft_color_hex(t_game *game);
+void	ft_hex_f(size_t nb, int a, t_game *game);
+void	ft_write_hex_f(size_t a, int w, t_game *game);
+int		ft_str_isdigit(char *str);
+int		ft_matrix_len(char **str);
+char	*ft_check_format(char *str, char *to_find);
+char	*ft_strstr(char *str, char *to_find);
+char	*ft_find_str_matrix(char *str, char **mat);
+char	*ft_find_str_matrix2(char *str, char **mat);
+void	ft_count_lines(t_game *g, int i, int fd);
+void	ft_fill_map(t_game *g, int i, int fd);
+int		ft_read_file(t_game *g, char *name);
+void	ft_remove_end_line(t_game *game);
+void	ft_file_copy(t_game	*game);
+char	**ft_get_map(t_game *game);
 
 #endif

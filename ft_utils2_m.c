@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "cub3d.h"
 
 void	free_matrix(char **str)
@@ -18,7 +17,7 @@ void	free_matrix(char **str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 	{
 		free(str[i]);
 		i++;
@@ -66,11 +65,9 @@ void	ft_map_p(char *s, t_game *g, int *p, int j)
 
 int	ft_map_exit_check(t_game *g)
 {
-	int	i;
 	int	j;
 	int	p;
 
-	i = 0;
 	j = 0;
 	p = 0;
 	while (g->map[j] && j < g->mh)
@@ -89,11 +86,8 @@ int	ft_map_exit_check(t_game *g)
 
 int	ft_map_check(t_game *g)
 {
-	int	size;
-
-	size = (int)ft_strlen(g->map[0]);
 	if (ft_close_map_check(g->map, g->mh) == 1)
-	{ 
+	{
 		printf("Error not close\n");
 		return (-1);
 	}
@@ -102,7 +96,7 @@ int	ft_map_check(t_game *g)
 		printf("Error\nFalta un Coleccionable/Salida/personaje");
 		return (-1);
 	}
-	if (ft_check_charac(g, size) == 1)
+	if (ft_check_charac(g) == 1)
 	{
 		printf("Error\nCaracter incorrecto");
 		return (-1);

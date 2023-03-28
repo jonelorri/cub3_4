@@ -3,13 +3,13 @@ F 84,217,225
 C 93,220,121
 
 
-NO ./42_textura.xpm
-SO ./42_textura2.xpm
-WE ./42_textura3.xpm
-EA ./42_textura4.xpm
+NO ./42_textura_pared.xpm
+SO ./42_textura_pared.xpm
+WE ./42_textura_pared.xpm
+EA ./42_textura_pared.xpm
 
-1111111111111
-1111111111111
+1111111110011
+1111111110011
 1000000000111
 1000000000111
 1000000000111

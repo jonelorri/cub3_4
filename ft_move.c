@@ -11,12 +11,9 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <stdio.h>
-#include "mlx/mlx.h"
 
 int	ft_controlls(int keykode, t_game *g)
 {
-	//printf("tecla = %d\n")
 	if (keykode == 0x35)
 	{
 		mlx_destroy_window(g->mlx, g->win);

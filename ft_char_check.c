@@ -10,17 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "cub3d.h"
 
-int	ft_check_charac(t_game *g, int size)
+int	ft_check_charac(t_game *g)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	size = 0;
 	while (g->map[j] && j < g->mh)
 	{
 		while (g->map[j][i] && i < (int)ft_strlen(g->map[j]) - 1)
