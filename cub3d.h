@@ -178,5 +178,17 @@ int		ft_read_file(t_game *g, char *name);
 void	ft_remove_end_line(t_game *game);
 void	ft_file_copy(t_game	*game);
 char	**ft_get_map(t_game *game);
+int		ft_get_map2(t_game *game);
+int		ft_get_map3(t_game *game);
+int		ft_check_tex(t_game *game);
+int		ft_check_color_com(char *str);
+int		ft_get_color_f(t_game *game);
+int		create_trgb(int t, int r, int g, int b);
+int		ft_get_color_c(t_game *game);
+int		ft_file_split(t_game *game);
+void	ft_move_up(t_game *game, int screen_w, int screen_h);
+void	ft_move_down(t_game *game, int screen_w, int screen_h);
+void	ft_move_right(t_game *game, int screen_w, int screen_h);
+void	ft_move_left(t_game *game, int screen_w, int screen_h);
 
 #endif

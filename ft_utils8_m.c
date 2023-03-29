@@ -34,9 +34,26 @@ void	ft_remove_end_line(t_game *game)
 	}
 }
 
+char	**ft_get_map_2(int size, int j, t_game *game)
+{
+	int		i;
+	char	**map;
+
+	map = (char **)malloc(sizeof(char *) * (size + 1));
+	i = j;
+	size = 0;
+	while (game->file[i])
+	{
+		map[size] = ft_strdup(game->file[i]);
+		size++;
+		i++;
+	}
+	map[size] = NULL;
+	return (map);
+}
+
 char	**ft_get_map(t_game *game)
 {
-	char	**map;
 	int		i;
 	int		j;
 	int		size;
@@ -61,17 +78,7 @@ char	**ft_get_map(t_game *game)
 		printf("Error, invalid map\n");
 		return (NULL);
 	}
-	map = (char **)malloc(sizeof(char *) * (size + 1));
-	i = j;
-	size = 0;
-	while (game->file[i])
-	{
-		map[size] = ft_strdup(game->file[i]);
-		size++;
-		i++;
-	}
-	map[size] = NULL;
-	return (map);
+	return (ft_get_map_2(size, j, game));
 }
 
 void	ft_file_copy(t_game	*game)
@@ -88,4 +95,28 @@ void	ft_file_copy(t_game	*game)
 		i++;
 	}
 	game->file_save[i] = NULL;
+}
+
+int	ft_get_map2(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	ft_file_copy(game);
+	t_map_trim(game->file_save);
+	while (game->file_save[i] && game->file_save[i][0] 
+		&& game->file_save[i][0] != '1' )
+	{
+		i++;
+	}
+	while (game->file_save[i])
+	{
+		if (ft_strchr(game->file_save[i], '\n'))
+		{
+			printf("Error, invalid map\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
