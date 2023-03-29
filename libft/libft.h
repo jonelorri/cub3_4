@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibaines <ibaines@student.42.urduli>        +#+  +:+       +#+        */
+/*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/26 13:42:07 by ibaines           #+#    #+#             */
-/*   Updated: 2022/03/01 13:02:49 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 19:45:43 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,7 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 
 char	*ft_strjoin(char *s1, char *s2);
+
+char	*ft_strjoin2(char *s1, char *s2);
+
 #endif

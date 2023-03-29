@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 18:09:57 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 19:07:05 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 
 #define SCREENWIDTH 640
 #define SCREENHEIGHT 480
+
+void	free_map(t_game *g)
+{
+	int	i;
+
+	i = 0;
+	while (g->map[i])
+	{
+		free(g->new_map[i]);
+		free(g->map[i]);
+		i++;
+	}
+	free(g->map);
+	free(g->new_map);
+}
 
 void	ft_mv_cam_left(t_game *g)
 {

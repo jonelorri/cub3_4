@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 18:31:27 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 18:00:00 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 19:08:12 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,5 +190,6 @@ void	ft_move_up(t_game *game, int screen_w, int screen_h);
 void	ft_move_down(t_game *game, int screen_w, int screen_h);
 void	ft_move_right(t_game *game, int screen_w, int screen_h);
 void	ft_move_left(t_game *game, int screen_w, int screen_h);
+void	free_map(t_game *g);
 
 #endif

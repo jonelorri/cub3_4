@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils8_m.c                                      :+:      :+:    :+:   */
+/*   ft_utils10_m.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/28 18:32:07 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 19:13:29 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ int	ft_file_split(t_game *game)
 		printf("\nError with colors\n");
 		return (-1);
 	}
-	ft_color_hex(game);
-	ft_color_hex_c(game);
 	if (ft_get_map2(game))
 		return (-1);
 	game->map = ft_get_map(game);
