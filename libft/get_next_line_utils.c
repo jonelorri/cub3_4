@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 11:16:03 by ibaines           #+#    #+#             */
-/*   Updated: 2023/02/24 19:07:12 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 17:52:37 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	ptr1[j + i] = '\0';
-	//free((char *)s1);
 	return (ptr1);
 }
 
@@ -61,7 +60,7 @@ char	*ft_strdup(char *s1)
 
 	i = 0;
 	if (!s1)
-		return(NULL);
+		return (NULL);
 	ptrs1 = ft_strlen((char *)s1);
 	ptr = (char *)malloc(ptrs1 + 1 + 1);
 	if (!ptr)

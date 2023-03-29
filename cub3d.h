@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 18:31:27 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/28 19:03:00 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 18:00:00 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct s_data
 	int		draw_start;
 	int		draw_end;
 	int		color;
-	double	rot_speed;
+	double	r_s;
 	double	move_speed;
 }				t_data;
 

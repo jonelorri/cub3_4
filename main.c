@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/28 19:50:01 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 18:09:57 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,50 +15,60 @@
 #define SCREENWIDTH 640
 #define SCREENHEIGHT 480
 
-int	key_event(int key_code, t_game *game)
+void	ft_mv_cam_left(t_game *g)
 {
 	double	old_plane_x;
 	double	old_dir_x;
 
+	old_dir_x = g->m.dir_x;
+	g->m.dir_x = g->m.dir_x * cos(-g->m.r_s) - g->m.dir_y * sin(-g->m.r_s);
+	g->m.dir_y = old_dir_x * sin(-g->m.r_s) + g->m.dir_y * cos(-g->m.r_s);
+	old_plane_x = g->m.plane_x;
+	g->m.plane_x = g->m.plane_x * cos(-g->m.r_s) - g->m.plane_y * sin(-g->m.r_s);
+	g->m.plane_y = old_plane_x * sin(-g->m.r_s) + g->m.plane_y * cos(-g->m.r_s);
+	mlx_destroy_image(g->mlx, g->m.img);
+	g->m.img = mlx_new_image(g->mlx, SCREENWIDTH, SCREENHEIGHT);
+	g->m.addr = mlx_get_data_addr(g->m.img, &g->m.bpp, &g->m.line_length, &g->m.endian);
+	ft_draw(g);
+	mlx_put_image_to_window(g->mlx, g->win, g->m.img, 0, 0);
+}
+
+void	ft_mv_cam_right(t_game *g)
+{
+	double	old_plane_x;
+	double	old_dir_x;
+
+	old_dir_x = g->m.dir_x;
+	g->m.dir_x = g->m.dir_x * cos(g->m.r_s) - g->m.dir_y * sin(g->m.r_s);
+	g->m.dir_y = old_dir_x * sin(g->m.r_s) + g->m.dir_y * cos(g->m.r_s);
+	old_plane_x = g->m.plane_x;
+	g->m.plane_x = g->m.plane_x * cos(g->m.r_s) - g->m.plane_y * sin(g->m.r_s);
+	g->m.plane_y = old_plane_x * sin(g->m.r_s) + g->m.plane_y * cos(g->m.r_s);
+	mlx_destroy_image(g->mlx, g->m.img);
+	g->m.img = mlx_new_image(g->mlx, SCREENWIDTH, SCREENHEIGHT);
+	g->m.addr = mlx_get_data_addr(g->m.img, &g->m.bpp, &g->m.line_length, &g->m.endian);
+	ft_draw(g);
+	mlx_put_image_to_window(g->mlx, g->win, g->m.img, 0, 0);
+}
+
+int	key_event(int key_code, t_game *g)
+{
+
 	if (key_code == 53)
 		//exit(0);
-	ft_close(game);
+	ft_close(g);
 	else if (key_code == 0x0D)
-		ft_move_up(game, SCREENWIDTH, SCREENHEIGHT);
+		ft_move_up(g, SCREENWIDTH, SCREENHEIGHT);
 	else if (key_code == 0x01)
-		ft_move_down(game, SCREENWIDTH, SCREENHEIGHT);
+		ft_move_down(g, SCREENWIDTH, SCREENHEIGHT);
 	if (key_code == 2)
-		ft_move_right(game, SCREENWIDTH, SCREENHEIGHT);
+		ft_move_right(g, SCREENWIDTH, SCREENHEIGHT);
 	if (key_code == 0)
-		ft_move_left(game, SCREENWIDTH, SCREENHEIGHT);
+		ft_move_left(g, SCREENWIDTH, SCREENHEIGHT);
 	if (key_code == 124)
-	{
-		old_dir_x = game->m.dir_x;
-		game->m.dir_x = game->m.dir_x * cos(-game->m.rot_speed) - game->m.dir_y * sin(-game->m.rot_speed);
-		game->m.dir_y = old_dir_x * sin(-game->m.rot_speed) + game->m.dir_y * cos(-game->m.rot_speed);
-		old_plane_x = game->m.plane_x;
-		game->m.plane_x = game->m.plane_x * cos(-game->m.rot_speed) - game->m.plane_y * sin(-game->m.rot_speed);
-		game->m.plane_y = old_plane_x * sin(-game->m.rot_speed) + game->m.plane_y * cos(-game->m.rot_speed);
-		mlx_destroy_image(game->mlx, game->m.img);
-		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
-		ft_draw(game);
-		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
-	}
-	else if (key_code == 123)
-	{
-		old_dir_x = game->m.dir_x;
-		game->m.dir_x = game->m.dir_x * cos(game->m.rot_speed) - game->m.dir_y * sin(game->m.rot_speed);
-		game->m.dir_y = old_dir_x * sin(game->m.rot_speed) + game->m.dir_y * cos(game->m.rot_speed);
-		old_plane_x = game->m.plane_x;
-		game->m.plane_x = game->m.plane_x * cos(game->m.rot_speed) - game->m.plane_y * sin(game->m.rot_speed);
-		game->m.plane_y = old_plane_x * sin(game->m.rot_speed) + game->m.plane_y * cos(game->m.rot_speed);
-		mlx_destroy_image(game->mlx, game->m.img);
-		game->m.img = mlx_new_image(game->mlx, SCREENWIDTH, SCREENHEIGHT);
-		game->m.addr = mlx_get_data_addr(game->m.img, &game->m.bpp, &game->m.line_length, &game->m.endian);
-		ft_draw(game);
-		mlx_put_image_to_window(game->mlx, game->win, game->m.img, 0, 0);
-	}
+		ft_mv_cam_left(g);
+	if (key_code == 123)
+		ft_mv_cam_right(g);
 	return (0);
 }
 
@@ -82,55 +92,49 @@ unsigned int	get_mlx_pixel_color(t_img *tex, int x, int y)
 	return (color);
 }
 
-static void	draw_column(t_game *game, int x, int y, t_img *tex)
+static void	draw_column(t_game *g, int x, int y, t_img *tex)
 {
-	my_mlx_pixel_put(&game->m, x, y, get_mlx_pixel_color(tex, game->tex_x, game->tex_y));
+	my_mlx_pixel_put(&g->m, x, y, get_mlx_pixel_color(tex, g->tex_x, g->tex_y));
 }
 
-void	ver_line(t_data *m, int x, t_game *game)
+void	ver_line(t_data *m, int x, t_game *g)
 {
 	int	i;
 
 	i = 0;
 	while (i < m->draw_start)
-	{
-		my_mlx_pixel_put(m, x, i, game->c_col.color);
-		i ++;
-	}
+		my_mlx_pixel_put(m, x, i++, g->c_col.color);
 	while (i < SCREENHEIGHT)
 	{
-		game->tex_y = (int)game->tex_pos & (game->tex_height - 1);
-		game->tex_pos += game->step;
-		if (game->m.color == 1)
-			draw_column(game, x, i, &game->no);
-		if (game->m.color == 2)
-			draw_column(game, x, i, &game->we);
-		if (game->m.color == 3)
-			draw_column(game, x, i, &game->so);
-		if (game->m.color == 4)
-			draw_column(game, x, i, &game->ea);
+		g->tex_y = (int)g->tex_pos & (g->tex_height - 1);
+		g->tex_pos += g->step;
+		if (g->m.color == 1)
+			draw_column(g, x, i, &g->no);
+		if (g->m.color == 2)
+			draw_column(g, x, i, &g->we);
+		if (g->m.color == 3)
+			draw_column(g, x, i, &g->so);
+		if (g->m.color == 4)
+			draw_column(g, x, i, &g->ea);
 		i ++;
 	}
 	while (m->draw_end < SCREENHEIGHT)
-	{
-		my_mlx_pixel_put(m, x, m->draw_end, game->f_col.color);
-		m->draw_end ++;
-	}
+		my_mlx_pixel_put(m, x, m->draw_end++, g->f_col.color);
 }
 
-char	ft_find_pj(t_game *game)
+char	ft_find_pj(t_game *g)
 {
 	int	i;
 	int	j;
 
 	i = 0;
 	j = 0;
-	while (game->map[i])
+	while (g->map[i])
 	{
-		while (game->map[i][j])
+		while (g->map[i][j])
 		{
-			if (game->map[i][j] == 'E' || game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'W')
-				return (game->map[i][j]);
+			if (g->map[i][j] == 'E' || g->map[i][j] == 'N' || g->map[i][j] == 'S' || g->map[i][j] == 'W')
+				return (g->map[i][j]);
 			j++;
 		}
 		j = 0;
@@ -178,104 +182,104 @@ void	init_variables(t_data *m, t_game *game)
 	}
 	m->time = 0;
 	m->old_time = 0;
-	m->rot_speed = 25;
+	m->r_s = 25;
 	m->move_speed = 0.1;
 }
 
-void	ft_draw(t_game *game)
+void	ft_draw(t_game *g)
 {
 	int	x;
 
 	x = 0;
 	while (x < SCREENWIDTH)
 	{
-		game->m.camera_x = 2 * x / (double)SCREENWIDTH - 1;
-		game->m.ray_dir_x = game->m.dir_x + game->m.plane_x * game->m.camera_x;
-		game->m.ray_dir_y = game->m.dir_y + game->m.plane_y * game->m.camera_x;
-		game->m.map_x = (int)game->m.pos_x;
-		game->m.map_y = (int)game->m.pos_y;
-		if (game->m.ray_dir_x == 0)
-			game->m.delta_dist_x = exp(30);
+		g->m.camera_x = 2 * x / (double)SCREENWIDTH - 1;
+		g->m.ray_dir_x = g->m.dir_x + g->m.plane_x * g->m.camera_x;
+		g->m.ray_dir_y = g->m.dir_y + g->m.plane_y * g->m.camera_x;
+		g->m.map_x = (int)g->m.pos_x;
+		g->m.map_y = (int)g->m.pos_y;
+		if (g->m.ray_dir_x == 0)
+			g->m.delta_dist_x = exp(30);
 		else
-			game->m.delta_dist_x = fabs(1.0 / game->m.ray_dir_x);
-		if (game->m.ray_dir_y == 0)
-			game->m.delta_dist_y = exp(30);
+			g->m.delta_dist_x = fabs(1.0 / g->m.ray_dir_x);
+		if (g->m.ray_dir_y == 0)
+			g->m.delta_dist_y = exp(30);
 		else
-			game->m.delta_dist_y = fabs(1.0 / game->m.ray_dir_y);
-		game->m.hit = 0;
-		if (game->m.ray_dir_x < 0)
+			g->m.delta_dist_y = fabs(1.0 / g->m.ray_dir_y);
+		g->m.hit = 0;
+		if (g->m.ray_dir_x < 0)
 		{
-			game->m.step_x = -1;
-			game->m.side_dist_x = (game->m.pos_x - game->m.map_x) * game->m.delta_dist_x;
+			g->m.step_x = -1;
+			g->m.side_dist_x = (g->m.pos_x - g->m.map_x) * g->m.delta_dist_x;
 		}
 		else
 		{
-			game->m.step_x = 1;
-			game->m.side_dist_x = (game->m.map_x + 1.0 - game->m.pos_x) * game->m.delta_dist_x;
+			g->m.step_x = 1;
+			g->m.side_dist_x = (g->m.map_x + 1.0 - g->m.pos_x) * g->m.delta_dist_x;
 		}
-		if (game->m.ray_dir_y < 0)
+		if (g->m.ray_dir_y < 0)
 		{
-			game->m.step_y = -1;
-			game->m.side_dist_y = (game->m.pos_y - game->m.map_y) * game->m.delta_dist_y;
+			g->m.step_y = -1;
+			g->m.side_dist_y = (g->m.pos_y - g->m.map_y) * g->m.delta_dist_y;
 		}
 		else
 		{
-			game->m.step_y = 1;
-			game->m.side_dist_y = (game->m.map_y + 1.0 - game->m.pos_y) * game->m.delta_dist_y;
+			g->m.step_y = 1;
+			g->m.side_dist_y = (g->m.map_y + 1.0 - g->m.pos_y) * g->m.delta_dist_y;
 		}
-		while (game->m.hit == 0)
+		while (g->m.hit == 0)
 		{
-			if (game->m.side_dist_x < game->m.side_dist_y)
+			if (g->m.side_dist_x < g->m.side_dist_y)
 			{
-				game->m.side_dist_x += game->m.delta_dist_x;
-				game->m.map_x += game->m.step_x;
-				game->m.side = 0;
+				g->m.side_dist_x += g->m.delta_dist_x;
+				g->m.map_x += g->m.step_x;
+				g->m.side = 0;
 			}
 			else
 			{
-				game->m.side_dist_y += game->m.delta_dist_y;
-				game->m.map_y += game->m.step_y;
-				game->m.side = 1;
+				g->m.side_dist_y += g->m.delta_dist_y;
+				g->m.map_y += g->m.step_y;
+				g->m.side = 1;
 			}
-			if (game->map[game->m.map_y][game->m.map_x] == '1')
-				game->m.hit = 1;
+			if (g->map[g->m.map_y][g->m.map_x] == '1')
+				g->m.hit = 1;
 		}
-		if (game->m.side == 0)
+		if (g->m.side == 0)
 		{
-			if (game->m.ray_dir_x > 0)
-				game->m.color = 1;
+			if (g->m.ray_dir_x > 0)
+				g->m.color = 1;
 			else
-				game->m.color = 2;
-			game->m.perp_wall_dist = (game->m.side_dist_x - game->m.delta_dist_x);
+				g->m.color = 2;
+			g->m.perp_wall_dist = (g->m.side_dist_x - g->m.delta_dist_x);
 		}
 		else
 		{
-			game->m.perp_wall_dist = (game->m.side_dist_y - game->m.delta_dist_y);
-			if (game->m.ray_dir_y > 0)
-				game->m.color = 3;
+			g->m.perp_wall_dist = (g->m.side_dist_y - g->m.delta_dist_y);
+			if (g->m.ray_dir_y > 0)
+				g->m.color = 3;
 			else
-				game->m.color = 4;
+				g->m.color = 4;
 		}
-		game->m.line_h = (int)(SCREENHEIGHT / game->m.perp_wall_dist);
-		game->m.draw_start = -game->m.line_h / 2 + SCREENHEIGHT / 2;
-		if (game->m.draw_start < 0)
-			game->m.draw_start = 0;
-		game->m.draw_end = game->m.line_h / 2 + SCREENHEIGHT / 2;
-		if (game->m.draw_end >= SCREENHEIGHT)
-			game->m.draw_end = SCREENHEIGHT - 1;
-		if (game->m.side == 0)
-			game->wallx = game->m.pos_y + game->m.perp_wall_dist * game->m.ray_dir_y;
+		g->m.line_h = (int)(SCREENHEIGHT / g->m.perp_wall_dist);
+		g->m.draw_start = -g->m.line_h / 2 + SCREENHEIGHT / 2;
+		if (g->m.draw_start < 0)
+			g->m.draw_start = 0;
+		g->m.draw_end = g->m.line_h / 2 + SCREENHEIGHT / 2;
+		if (g->m.draw_end >= SCREENHEIGHT)
+			g->m.draw_end = SCREENHEIGHT - 1;
+		if (g->m.side == 0)
+			g->wallx = g->m.pos_y + g->m.perp_wall_dist * g->m.ray_dir_y;
 		else
-			game->wallx = game->m.pos_x + game->m.perp_wall_dist * game->m.ray_dir_x;
-		game->wallx -= floor(game->wallx);
-		game->tex_x = (int)(game->wallx * (double)game->tex_width);
-		if (game->m.side == 0 && game->m.ray_dir_x > 0)
-			game->tex_x = game->tex_width - game->tex_x - 1;
-		if (game->m.side == 1 && game->m.ray_dir_y < 0)
-			game->tex_x = game->tex_width - game->tex_x - 1;
-		game->step = 1.0 * game->tex_height / game->m.line_h;
-		game->tex_pos = (game->m.draw_start - SCREENHEIGHT / 2 + game->m.line_h / 2) * game->step;
-		ver_line(&game->m, x, game);
+			g->wallx = g->m.pos_x + g->m.perp_wall_dist * g->m.ray_dir_x;
+		g->wallx -= floor(g->wallx);
+		g->tex_x = (int)(g->wallx * (double)g->tex_width);
+		if (g->m.side == 0 && g->m.ray_dir_x > 0)
+			g->tex_x = g->tex_width - g->tex_x - 1;
+		if (g->m.side == 1 && g->m.ray_dir_y < 0)
+			g->tex_x = g->tex_width - g->tex_x - 1;
+		g->step = 1.0 * g->tex_height / g->m.line_h;
+		g->tex_pos = (g->m.draw_start - SCREENHEIGHT / 2 + g->m.line_h / 2) * g->step;
+		ver_line(&g->m, x, g);
 		x ++;
 	}
 }
@@ -313,30 +317,30 @@ void	fill_new_map(t_game *game)
 
 int	main(int argc, char **argv)
 {
-	t_game	game;
+	t_game	g;
 	int		i;
 
 	i = 0;
 	if (argc < 2)
 		return (0);
-	if (ft_read_file(&game, argv[1]) == 0)
+	if (ft_read_file(&g, argv[1]) == 0)
 		return (0);
-	while (i < game.mh)
+	while (i < g.mh)
 		i++;
-	game.mlx = mlx_init();
-	ft_remove_end_line(&game);
-	if (ft_file_split(&game) == -1)
+	g.mlx = mlx_init();
+	ft_remove_end_line(&g);
+	if (ft_file_split(&g) == -1)
 		return (-1);
-	if (ft_map_check(&game) == -1)
+	if (ft_map_check(&g) == -1)
 		return (-1);
-	init_variables(&game.m, &game);
-	fill_new_map(&game);
-	game.win = mlx_new_window(game.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");
-	game.m.img = mlx_new_image(game.mlx, SCREENWIDTH, SCREENHEIGHT);
-	game.m.addr = mlx_get_data_addr(game.m.img, &game.m.bpp, &game.m.line_length, &game.m.endian);
-	ft_draw(&game);
-	mlx_put_image_to_window(game.mlx, game.win, game.m.img, 0, 0);
-	mlx_hook(game.win, 2, 0, &key_event, &game);
-	mlx_hook(game.win, 17, 0, ft_close, &game);
-	mlx_loop(game.mlx);
+	init_variables(&g.m, &g);
+	fill_new_map(&g);
+	g.win = mlx_new_window(g.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");
+	g.m.img = mlx_new_image(g.mlx, SCREENWIDTH, SCREENHEIGHT);
+	g.m.addr = mlx_get_data_addr(g.m.img, &g.m.bpp, &g.m.line_length, &g.m.endian);
+	ft_draw(&g);
+	mlx_put_image_to_window(g.mlx, g.win, g.m.img, 0, 0);
+	mlx_hook(g.win, 2, 0, &key_event, &g);
+	mlx_hook(g.win, 17, 0, ft_close, &g);
+	mlx_loop(g.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/28 18:32:07 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/29 17:59:07 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,9 @@ int	ft_get_map2(t_game *game)
 	i = 0;
 	ft_file_copy(game);
 	t_map_trim(game->file_save);
-	while (game->file_save[i] && game->file_save[i][0] 
+	while (game->file_save[i] && game->file_save[i][0] \
 		&& game->file_save[i][0] != '1' )
-	{
 		i++;
-	}
 	while (game->file_save[i])
 	{
 		if (ft_strchr(game->file_save[i], '\n'))
