@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/30 19:34:31 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 19:54:12 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,15 @@ void	ft_move_up(t_game *g, int screen_w, int screen_h)
 
 	prueba_x = g->m.pos_x + g->m.dir_x * g->m.move_speed;
 	prueba_y = g->m.pos_y + g->m.dir_y * g->m.move_speed;
+		printf("hola1\n");
 	if (g->map[(int)g->m.pos_y] && g->map[(int)g->m.pos_y][(int)(prueba_x)] != '1')
 	{
+		printf("hola2\n");
 		g->m.pos_x = prueba_x;
 	}
 	if (g->map[(int)(prueba_y)] && g->map[(int)(prueba_y)][(int)(g->m.pos_x)] != '1')
 	{
+		printf("hola3\n");
 
 		g->m.pos_y = prueba_y;
 	}

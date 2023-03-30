@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_utils11_m.c                                     :+:      :+:    :+:   */
+/*   ft_utils13_m.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 18:11:26 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 20:16:49 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@ void	ver_line(t_data *m, int x, t_game *g)
 	int	i;
 
 	i = 0;
+	printf("x = %d, line_len = %d, bpp = %d\n", x, m->line_length, m->bpp);
 	while (i < m->draw_start)
 		my_mlx_pixel_put(m, x, i++, g->c_col.color);
-	while (i < SCREENHEIGHT)
+	while (i < m->draw_end)
 	{
 		g->tex_y = (int)g->tex_pos & (g->tex_height - 1);
 		g->tex_pos += g->step;
@@ -41,8 +42,10 @@ void	ver_line(t_data *m, int x, t_game *g)
 			draw_column(g, x, i, &g->ea);
 		i ++;
 	}
-	while (m->draw_end < SCREENHEIGHT)
-		my_mlx_pixel_put(m, x, m->draw_end++, g->f_col.color);
+	printf("x = %d, line_len = %d, bpp = %d\n", x, m->line_length, m->bpp);
+	while ( i < SCREENHEIGHT)
+		my_mlx_pixel_put(m, x, i++, g->f_col.color);
+	printf("x = %d, line_len = %d, bpp = %d\n", x, m->line_length, m->bpp);
 }
 
 char	ft_find_pj(t_game *g)
