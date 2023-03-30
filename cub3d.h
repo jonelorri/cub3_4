@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 18:31:27 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 19:08:12 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:39:35 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,8 @@ void			ft_move_down(t_game *game, int screen_w, int screen_h);
 void			ft_move_right(t_game *game, int screen_w, int screen_h);
 void			ft_move_left(t_game *game, int screen_w, int screen_h);
 void			free_map(t_game *g);
-void			free_map(t_game *g);
+void			free_map_error(t_game *g);
+int				ft_exit_error(void);
 unsigned int	get_mlx_pixel_color(t_img *tex, int x, int y);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int				key_event(int key_code, t_game *g);

@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 19:07:05 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:59:17 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,16 +110,16 @@ int	main(int argc, char **argv)
 {
 	t_game	g;
 
-	if (argc < 2)
+	if (argc != 2)
 		return (0);
 	if (ft_read_file(&g, argv[1]) == 0)
-		return (0);
+		ft_exit_error();
 	g.mlx = mlx_init();
 	ft_remove_end_line(&g);
 	if (ft_file_split(&g) == -1)
-		return (-1);
+		ft_exit_error();
 	if (ft_map_check(&g) == -1)
-		return (-1);
+		ft_exit_error();
 	init_variables(&g.m, &g);
 	fill_new_map(&g);
 	g.win = mlx_new_window(g.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");

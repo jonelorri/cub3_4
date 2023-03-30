@@ -1,7 +1,7 @@
 NAME= Cub3d
 CC= gcc
 CFLAGS= -Wall -Wextra -Werror 
-#SANITIZE= -g3 -fsanitize=address
+SANITIZE= -g3 -fsanitize=address
 RM= rm -rf
 FILES= 	main \
 		ft_utils15_m \
@@ -20,6 +20,7 @@ FILES= 	main \
 		ft_utils2_m \
 		ft_utils_m \
 		ft_char_check \
+		ft_free \
 
 SRC= $(addsuffix .c, $(FILES))
 OBJ= $(addsuffix .o, $(FILES))

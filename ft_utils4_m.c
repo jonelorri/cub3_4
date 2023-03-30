@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/29 19:49:36 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 18:57:48 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,6 @@ int	first2_map_check(char **map, int mh, int x, int y)
 			return (1);
 	}
 	return (0);
-}
-
-int	ft_close(t_game *g)
-{
-	mlx_destroy_window(g->mlx, g->win);
-	free_map(g);
-	system("leaks Cub3d");
-	exit(0);
 }
 
 void	ft_write_hex_c(size_t a, int w, t_game *game)
