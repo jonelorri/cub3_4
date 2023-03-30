@@ -4,6 +4,10 @@ CFLAGS= -Wall -Wextra -Werror
 #SANITIZE= -g3 -fsanitize=address
 RM= rm -rf
 FILES= 	main \
+		ft_utils15_m \
+		ft_utils14_m \
+		ft_utils13_m \
+		ft_utils12_m \
 		ft_utils11_m \
 		ft_utils10_m \
 		ft_utils9_m \

@@ -95,3 +95,18 @@ void	ft_move_right(t_game *g, int screen_w, int screen_h)
 	ft_draw(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->m.img, 0, 0);
 }
+
+void	free_map(t_game *g)
+{
+	int	i;
+
+	i = 0;
+	while (g->map[i])
+	{
+		free(g->new_map[i]);
+		free(g->map[i]);
+		i++;
+	}
+	free(g->map);
+	free(g->new_map);
+}
