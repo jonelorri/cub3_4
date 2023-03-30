@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/30 20:19:31 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/30 20:46:16 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,5 @@ void	init_variables(t_data *m, t_game *game)
 	m->time = 0;
 	m->old_time = 0;
 	m->r_s = 25;
-	m->move_speed = 0.2;
+	m->move_speed = 0.15;
 }
