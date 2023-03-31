@@ -2,10 +2,19 @@ F 84,217,225
 C 93,220,121
 
 
-
 NO ./42_textura_jokin.xpm
+
+
+
+
 SO ./42_textura_jokin2.xpm
+
+
+
 WE ./42_textura_jokin3.xpm
+
+
+
 EA ./42_textura_jokin4.xpm
 
 
@@ -14,5 +23,5 @@ EA ./42_textura_jokin4.xpm
 10001000011  1 1 111
 100001000101      1111 1
 100000111011     1111011
-101N0011 1     11111 1 1
+101S0011 1     11111 1 1
 1111111       111

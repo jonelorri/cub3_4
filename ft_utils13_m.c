@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/30 20:47:37 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:22:02 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ver_line(t_data *m, int x, t_game *g)
 			draw_column(g, x, i, &g->ea);
 		i ++;
 	}
-	while ( i < SCREENHEIGHT)
+	while (i < SCREENHEIGHT)
 		my_mlx_pixel_put(m, x, i++, g->f_col.color);
 }
 

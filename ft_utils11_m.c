@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/30 19:54:12 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:24:39 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,10 @@ void	ft_move_up(t_game *g, int screen_w, int screen_h)
 
 	prueba_x = g->m.pos_x + g->m.dir_x * g->m.move_speed;
 	prueba_y = g->m.pos_y + g->m.dir_y * g->m.move_speed;
-		printf("hola1\n");
-	if (g->map[(int)g->m.pos_y] && g->map[(int)g->m.pos_y][(int)(prueba_x)] != '1')
-	{
-		printf("hola2\n");
+	if (g->map[(int)g->m.pos_y][(int)(prueba_x)] != '1')
 		g->m.pos_x = prueba_x;
-	}
-	if (g->map[(int)(prueba_y)] && g->map[(int)(prueba_y)][(int)(g->m.pos_x)] != '1')
-	{
-		printf("hola3\n");
-
+	if (g->map[(int)(prueba_y)][(int)(g->m.pos_x)] != '1')
 		g->m.pos_y = prueba_y;
-	}
 	mlx_destroy_image(g->mlx, g->m.img);
 	g->m.img = mlx_new_image(g->mlx, screen_w, screen_h);
 	g->m.addr = mlx_get_data_addr(g->m.img, &g->m.bpp, \
@@ -85,13 +77,9 @@ void	ft_move_right(t_game *g, int screen_w, int screen_h)
 	prueba_x = g->m.pos_x - (g->m.dir_y) * g->m.move_speed;
 	prueba_y = g->m.pos_y + g->m.dir_x * g->m.move_speed;
 	if (g->map[(int)(prueba_y)][(int)g->m.pos_x] != '1')
-	{
 		g->m.pos_y = prueba_y;
-	}
 	if (g->map[(int)(g->m.pos_y)][(int)(prueba_x)] != '1')
-	{
 		g->m.pos_x = prueba_x;
-	}
 	mlx_destroy_image(g->mlx, g->m.img);
 	g->m.img = mlx_new_image(g->mlx, screen_w, screen_h);
 	g->m.addr = mlx_get_data_addr(g->m.img, &g->m.bpp, \
@@ -99,4 +87,3 @@ void	ft_move_right(t_game *g, int screen_w, int screen_h)
 	ft_draw(g);
 	mlx_put_image_to_window(g->mlx, g->win, g->m.img, 0, 0);
 }
-

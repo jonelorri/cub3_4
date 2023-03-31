@@ -6,7 +6,7 @@
 /*   By: ibaines <ibaines@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 12:16:45 by ibaines           #+#    #+#             */
-/*   Updated: 2023/03/30 18:31:21 by ibaines          ###   ########.fr       */
+/*   Updated: 2023/03/31 18:19:09 by ibaines          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,10 @@ int	ft_get_color_c(t_game *game)
 		return (-1);
 	col_mat = ft_split(game->col_c, ',');
 	if (!col_mat || ft_matrix_len(col_mat) != 3)
-	{
-		free_matrix(col_mat);
-		return (-1);
-	}
+		return (free_matrix(col_mat), -1);
 	if (!ft_str_isdigit(col_mat[0]) || !ft_str_isdigit(col_mat[1]) || \
 	!ft_str_isdigit(col_mat[2]))
-	{
-		free_matrix(col_mat);
-		return (-1);
-	}
+		return (free_matrix(col_mat), -1);
 	game->c_col.r = ft_atoi(col_mat[0]);
 	game->c_col.g = ft_atoi(col_mat[1]);
 	game->c_col.b = ft_atoi(col_mat[2]);
