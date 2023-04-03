@@ -40,3 +40,20 @@ int	ft_draw4(t_game *g, int x)
 	ver_line(&g->m, x, g);
 	return (x + 1);
 }
+
+int	ft_check_size(t_game *game)
+{
+	if (game->no.h != 64 || game->so.h != 64 \
+		|| game->ea.h != 64 || game->we.h != 64)
+	{
+		printf("Wrong texture size\n");
+		return (1);
+	}
+	if (game->no.w != 64 || game->so.w != 64 \
+		|| game->ea.w != 64 || game->we.w != 64)
+	{
+		printf("Wrong texture size\n");
+		return (1);
+	}
+	return (0);
+}

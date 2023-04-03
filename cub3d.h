@@ -203,5 +203,6 @@ char			ft_find_pj(t_game *g);
 void			ver_line(t_data *m, int x, t_game *g);
 void			fill_new_map(t_game *game);
 int				ft_draw4(t_game *g, int x);
+int				ft_check_size(t_game *game);
 
 #endif

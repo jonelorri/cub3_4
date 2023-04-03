@@ -120,6 +120,8 @@ int	main(int argc, char **argv)
 		ft_exit_error();
 	if (ft_map_check(&g) == -1)
 		ft_exit_error();
+	if (ft_check_size(&g))
+		return (ft_exit_error());
 	init_variables(&g.m, &g);
 	fill_new_map(&g);
 	g.win = mlx_new_window(g.mlx, SCREENWIDTH, SCREENHEIGHT, "Cub3d");
